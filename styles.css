@@ -1,49 +1,14 @@
-/*
-  TODO 3: Elige los colores de tu piñata.
-  --color-1, --color-2 y --color-3 pintan los picos y las tiras de papel.
-  --cuerpo pinta el centro de la piñata.
-  Usa estos colores o cualquier otro que te guste:
-    Rosa mexicano #E4007C
-    Amarillo      #FFC21A
-    Turquesa      #00A6A6
-    Naranja       #FF7A1A
-    Verde limón   #8BD346
-    Morado        #7A2AB8
-    Azul talavera #1F4AA8
-    Coral         #F0505A
-  Ejemplo: --color-1: #8BD346;
-*/
 :root {
-  --color-1: #E4007C;
-  --color-2: #FFC21A;
-  --color-3: #00A6A6;
-  --cuerpo: #FFF6E5;
-}
-
-/* A partir de aquí no necesitas cambiar nada, pero puedes explorar */
-:root {
-  --tinta: #2B1D14;
-  --pared: #FBF6EE;
-  --cal: #F8E3C4;
-  --blanco: #FFFDF9;
-  --barro: #C0673D;
-  --mecate: #C9A46A;
-  --madera: #9C6B45;
-  --madera-oscura: #6E4A2F;
-
-  --fuente: "Bricolage Grotesque", system-ui, sans-serif;
-  --fuente-rotulo: "Shrikhand", "Arial Black", serif;
-
-  /* Franjas de sarape */
-  --sarape: linear-gradient(
-    #E4007C 0 16%, var(--tinta) 16% 20%, #FF7A1A 20% 32%, #FFC21A 32% 46%,
-    var(--tinta) 46% 50%, #00A6A6 50% 64%, #1F4AA8 64% 78%,
-    var(--tinta) 78% 82%, #7A2AB8 82% 100%
-  );
-
-  /* Tamaño de la piñata y largo de la cuerda */
-  --tam: min(380px, 80vw, 38svh);
-  --cuerda: calc(var(--tam) * 0.55 + 24px);
+  --rosa: #e4007c;
+  --amarillo: #ffc21a;
+  --azul: #1f4aa8;
+  --verde: #3e9b4f;
+  --naranja: #ff7a1a;
+  --morado: #7b2cbf;
+  --crema: #fff6e5;
+  --papel: #fffdf9;
+  --tinta: #2b1d14;
+  --sombra: rgba(43, 29, 20, 0.16);
 }
 
 *,
@@ -56,449 +21,456 @@
   display: none !important;
 }
 
+html,
 body {
   margin: 0;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  background: var(--pared);
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Bricolage Grotesque", system-ui, -apple-system, sans-serif;
   color: var(--tinta);
-  font-family: var(--fuente);
-  font-size: 1.0625rem;
-  line-height: 1.5;
-  overflow-x: hidden;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Franja de sarape arriba: todo el color de la página vive aquí y en la piñata */
-body::before {
-  content: "";
-  display: block;
-  height: 18px;
-  background: var(--sarape);
-}
-
-.fiesta {
-  flex: 1;
+  background-color: var(--crema);
+  background-image:
+    radial-gradient(circle at 20px 20px, rgba(228, 0, 124, 0.07) 2px, transparent 0),
+    radial-gradient(circle at 60px 60px, rgba(31, 74, 168, 0.07) 2px, transparent 0);
+  background-size: 80px 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: clamp(1.25rem, 5vw, 2.5rem) 1rem 0;
-  text-align: center;
+  justify-content: space-between;
+  padding: 16px 14px 20px;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.fiesta {
+  width: 100%;
+  max-width: 780px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 .titulo {
-  max-width: 18ch;
-  margin: 0;
-  font-family: var(--fuente-rotulo);
-  font-size: clamp(2rem, 7.5vw, 3.5rem);
+  font-family: "Shrikhand", cursive;
+  font-size: clamp(1.75rem, 4.5vw, 2.75rem);
   font-weight: 400;
   line-height: 1.1;
-  color: var(--color-1);
-  text-wrap: balance;
+  text-align: center;
+  color: var(--rosa);
+  text-shadow: 3px 3px 0 var(--amarillo), 5px 5px 0 rgba(43, 29, 20, 0.12);
+  margin: 4px 0 2px;
+  letter-spacing: 0.01em;
 }
 
-/* Patio: la pared donde cuelga la piñata */
-
+/* Escenario principal */
 .patio {
   position: relative;
-  width: min(880px, 100%);
-  flex: 1;
-  min-height: calc(var(--cuerda) + var(--tam) * 0.66 + var(--subir, 0px) + 6.5rem);
-  margin-top: clamp(1rem, 4vw, 1.75rem);
-  background: var(--cal);
-  border: 3px solid var(--tinta);
-  border-radius: 24px;
-  box-shadow: 0 18px 40px rgb(43 29 20 / 0.12);
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
-  cursor: crosshair;
+  width: 100%;
+  height: clamp(430px, 64vh, 560px);
+  border: 4px solid var(--tinta);
+  border-radius: 26px;
+  background:
+    linear-gradient(180deg, #ffe7ba 0%, #fff4dc 68%, #e9c99b 68.5%, #dfb782 100%);
+  box-shadow: 0 12px 0 var(--tinta), 0 20px 32px var(--sombra);
+  overflow: hidden;
 }
 
-/* Techo de papel de china: capas de flecos, de adelante hacia atrás */
+/* Banderines de papel picado */
 .techo {
   position: absolute;
-  inset: 0 0 auto;
-  z-index: 2;
-  height: 70px;
-  border-radius: 21px 21px 0 0;
+  top: 0;
+  left: -10px;
+  right: -10px;
+  height: 58px;
+  z-index: 3;
   pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 0, #E4007C 12.5px, transparent 13px) 0 6px / 26px 13px repeat-x,
-    linear-gradient(#E4007C, #E4007C) 0 0 / 100% 6px no-repeat,
-    radial-gradient(circle at 50% 0, #FF7A1A 14.5px, transparent 15px) 9px 16px / 30px 15px repeat-x,
-    linear-gradient(#FF7A1A, #FF7A1A) 0 0 / 100% 16px no-repeat,
-    radial-gradient(circle at 50% 0, #FFC21A 16.5px, transparent 17px) 4px 28px / 34px 17px repeat-x,
-    linear-gradient(#FFC21A, #FFC21A) 0 0 / 100% 28px no-repeat,
-    radial-gradient(circle at 50% 0, #2E933C 15.5px, transparent 16px) 14px 40px / 32px 16px repeat-x,
-    linear-gradient(#2E933C, #2E933C) 0 0 / 100% 40px no-repeat,
-    radial-gradient(circle at 50% 0, #7A2AB8 18.5px, transparent 19px) 6px 50px / 38px 19px repeat-x,
-    linear-gradient(#7A2AB8, #7A2AB8) 0 0 / 100% 50px no-repeat;
-  filter: drop-shadow(0 3px 0 rgb(43 29 20 / 0.15));
+  background-repeat: repeat-x;
+  background-size: 250px 58px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 250 58'%3E%3Cpath d='M0 3 Q125 11 250 3' fill='none' stroke='%232B1D14' stroke-width='2.5'/%3E%3Cg stroke='%232B1D14' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M4 5 H48 V42 L37 50 L26 42 L15 50 L4 42 Z' fill='%23E4007C'/%3E%3Cpath d='M54 6 H98 V44 L87 52 L76 44 L65 52 L54 44 Z' fill='%23FFC21A'/%3E%3Cpath d='M104 7 H148 V45 L137 53 L126 45 L115 53 L104 45 Z' fill='%231F4AA8'/%3E%3Cpath d='M154 6 H198 V44 L187 52 L176 44 L165 52 L154 44 Z' fill='%233E9B4F'/%3E%3Cpath d='M204 5 H248 V42 L237 50 L226 42 L215 50 L204 42 Z' fill='%23FF7A1A'/%3E%3C/g%3E%3Cg fill='%23FFE7BA'%3E%3Ccircle cx='26' cy='23' r='5'/%3E%3Cpolygon points='76,17 82,24 76,31 70,24'/%3E%3Ccircle cx='126' cy='25' r='5'/%3E%3Cpolygon points='176,17 182,24 176,31 170,24'/%3E%3Ccircle cx='226' cy='23' r='5'/%3E%3C/g%3E%3C/svg%3E");
+  animation: brisa 4.2s ease-in-out infinite alternate;
 }
 
-/* Macetas en las esquinas, paradas sobre el piso */
+@keyframes brisa {
+  0% {
+    transform: translateX(-4px) rotate(-0.3deg);
+  }
+  100% {
+    transform: translateX(4px) rotate(0.3deg);
+  }
+}
+
+/* Macetas decorativas */
 .maceta {
   position: absolute;
-  bottom: 68px;
-  width: clamp(56px, 13vw, 120px);
+  bottom: -2px;
+  width: clamp(72px, 13vw, 108px);
+  height: auto;
+  z-index: 4;
   pointer-events: none;
+  filter: drop-shadow(0 4px 0 rgba(43, 29, 20, 0.18));
 }
 
-.maceta-izquierda { left: 3%; }
-.maceta-derecha { right: 3%; }
-
-/* El piso de madera donde caen los dulces */
-.patio::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 72px;
-  border-top: 3px solid var(--tinta);
-  border-radius: 0 0 21px 21px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--madera) 0 118px,
-    var(--madera-oscura) 118px 120px,
-    #A77550 120px 230px,
-    var(--madera-oscura) 230px 232px
-  );
+.maceta-izquierda {
+  left: clamp(8px, 2.5vw, 22px);
 }
 
+.maceta-derecha {
+  right: clamp(8px, 2.5vw, 22px);
+}
+
+/* Cuerda y piñata colgante */
 .colgante {
   position: absolute;
   top: 0;
   left: 50%;
-  z-index: 1;
-  width: 0;
-  height: 0;
+  transform: translateX(-50%) rotate(0deg);
+  transform-origin: 50% 0%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+  will-change: transform;
+  transition: opacity 0.25s ease;
 }
 
-.cuerda {
-  position: absolute;
-  top: 0;
-  left: -2px;
-  width: 4px;
-  height: var(--cuerda);
-  background: var(--mecate);
-  transform-origin: 50% 0;
-}
-
-.pinata {
-  position: absolute;
-  top: calc(var(--cuerda) - var(--tam) * 0.345);
-  left: 0;
-  width: var(--tam);
-  height: var(--tam);
-  translate: -50% 0;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  /* Solo cuenta como golpe si tocas el dibujo, no las esquinas vacías */
+.colgante.rota {
+  opacity: 0;
   pointer-events: none;
 }
 
+.cuerda {
+  display: block;
+  width: 5px;
+  height: clamp(56px, 10vh, 88px);
+  background: repeating-linear-gradient(
+    -45deg,
+    #d4a36a,
+    #d4a36a 5px,
+    #9c6f3e 5px,
+    #9c6f3e 10px
+  );
+  border-left: 1.5px solid var(--tinta);
+  border-right: 1.5px solid var(--tinta);
+}
+
+.pinata {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-top: -10px;
+  width: clamp(195px, 34vw, 265px);
+  height: clamp(195px, 34vw, 265px);
+  cursor: pointer;
+  touch-action: manipulation;
+  outline: none;
+  transition: transform 0.08s ease;
+}
+
 .pinata:focus-visible {
-  outline: 3px dashed var(--tinta);
-  outline-offset: -8%;
-  border-radius: 50%;
+  filter: drop-shadow(0 0 0 4px var(--amarillo));
+}
+
+.pinata.golpeada {
+  animation: sacudida 0.26s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes sacudida {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(0.91, 1.07) rotate(-8deg);
+  }
+  55% {
+    transform: scale(1.06, 0.94) rotate(6deg);
+  }
+  80% {
+    transform: scale(0.98, 1.02) rotate(-3deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
 }
 
 .dibujo {
-  display: block;
   width: 100%;
   height: 100%;
   overflow: visible;
-  transform-origin: 50% 34.5%;
-  filter: drop-shadow(0 14px 14px rgb(43 29 20 / 0.18));
+  filter: drop-shadow(0 12px 14px rgba(43, 29, 20, 0.22));
 }
 
-.dibujo * {
-  pointer-events: visiblePainted;
+/* Verso tradicional inferior */
+.verso {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 8px 18px;
+  max-width: calc(100% - 170px);
+  background: var(--papel);
+  border: 3px solid var(--tinta);
+  border-radius: 999px;
+  box-shadow: 0 4px 0 var(--tinta);
+  font-weight: 800;
+  font-size: clamp(0.85rem, 2.2vw, 1.05rem);
+  text-align: center;
+  line-height: 1.25;
+  z-index: 6;
+  pointer-events: none;
+  transition: transform 0.18s ease;
 }
 
-.dibujo.golpe {
-  animation: golpe 0.32s ease-out;
+.verso.pulso {
+  transform: translateX(-50%) scale(1.07);
 }
 
-@keyframes golpe {
-  0% { scale: 1; }
-  30% { scale: 1.07 0.9; }
-  65% { scale: 0.97 1.04; }
-  100% { scale: 1; }
+/* Capa de confeti, pedazos y dulces */
+.capa {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  overflow: hidden;
 }
 
-/* Colores del dibujo: usan las variables del TODO 3 */
-.relleno-1 { fill: var(--color-1); }
-.relleno-2 { fill: var(--color-2); }
-.relleno-3 { fill: var(--color-3); }
-.relleno-cuerpo { fill: var(--cuerpo); }
-.trazo-1 { stroke: var(--color-1); }
-.trazo-2 { stroke: var(--color-2); }
-.trazo-3 { stroke: var(--color-3); }
-
-.contorno {
-  stroke: var(--tinta);
-  stroke-width: 4;
-  stroke-linejoin: round;
+.confeti,
+.pedazo,
+.chispa-texto {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity;
 }
 
-.borla {
-  fill: none;
-  stroke-width: 5;
-  stroke-linecap: round;
+.chispa-texto {
+  font-family: "Shrikhand", cursive;
+  font-size: 1.35rem;
+  color: var(--amarillo);
+  -webkit-text-stroke: 1.5px var(--tinta);
+  text-shadow: 2px 2px 0 var(--tinta);
+  transform: translate(-50%, -50%);
+  animation: flotar-golpe 0.65s ease-out forwards;
 }
 
-/* Papel de china alrededor del centro */
-.fleco {
-  fill: none;
-  stroke-width: 12;
-  stroke-dasharray: 2.6 2;
+@keyframes flotar-golpe {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.7) rotate(-8deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(-50%, -135%) scale(1.15) rotate(6deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -175%) scale(0.95) rotate(0deg);
+  }
 }
 
-.grieta {
-  fill: none;
-  stroke: var(--tinta);
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.dulce {
+  position: absolute;
+  pointer-events: auto;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 4px;
+  font-size: 1.9rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 0 rgba(43, 29, 20, 0.25));
+  transition: transform 0.14s ease;
+  z-index: 12;
+  touch-action: manipulation;
+}
+
+.dulce:hover {
+  transform: scale(1.25) rotate(-8deg);
+}
+
+.dulce.recogido {
+  pointer-events: none;
+  animation: recoger-dulce 0.35s ease-in forwards;
+}
+
+@keyframes recoger-dulce {
+  0% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.2);
+  }
+}
+
+/* Pantalla final cuando se rompe la piñata */
+.final {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(90%, 420px);
+  padding: 22px 20px;
+  background: rgba(255, 253, 249, 0.96);
+  border: 4px solid var(--tinta);
+  border-radius: 22px;
+  box-shadow: 0 8px 0 var(--tinta), 0 18px 28px rgba(43, 29, 20, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  z-index: 10;
+  animation: aparecer-final 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes aparecer-final {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -44%) scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.mensaje {
+  font-family: "Shrikhand", cursive;
+  font-size: clamp(1.35rem, 3.6vw, 1.85rem);
+  color: var(--rosa);
+  margin: 0;
+  line-height: 1.15;
+}
+
+.resumen {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--tinta);
+  line-height: 1.4;
+}
+
+.boton {
+  margin-top: 4px;
+  padding: 11px 22px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
+  background: var(--verde);
+  border: 3px solid var(--tinta);
+  border-radius: 999px;
+  box-shadow: 0 4px 0 var(--tinta);
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.15s ease;
+}
+
+.boton:hover {
+  background: #338643;
+  transform: translateY(-2px);
+}
+
+.boton:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--tinta);
+}
+
+/* Marcador y bolsa inferiores */
+.marcador,
+.bolsa {
+  margin: 0;
+  padding: 8px 18px;
+  background: var(--papel);
+  border: 3px solid var(--tinta);
+  border-radius: 999px;
+  box-shadow: 0 4px 0 var(--tinta);
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.bolsa {
+  background: var(--amarillo);
+}
+
+.pie {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.8;
+  text-align: center;
+}
+
+/* Palo decorado */
+.palo {
+  position: fixed;
+  top: -100px;
+  left: -100px;
+  width: 138px;
+  height: 16px;
+  border: 2.5px solid var(--tinta);
+  border-radius: 999px;
+  background: repeating-linear-gradient(
+    -60deg,
+    var(--rosa) 0 14px,
+    var(--amarillo) 14px 28px,
+    var(--azul) 28px 42px,
+    var(--verde) 42px 56px
+  );
+  box-shadow: 0 4px 8px rgba(43, 29, 20, 0.25);
+  transform-origin: 14px 50%;
+  transform: translate(0, 0) rotate(-28deg);
+  pointer-events: none;
+  z-index: 50;
   opacity: 0;
   transition: opacity 0.15s ease;
 }
 
-.grieta.visible {
-  opacity: 1;
-}
-
-/* La letra de la canción */
-
-.verso {
+.palo::after {
+  content: "";
   position: absolute;
-  bottom: 22px;
-  left: 50%;
-  z-index: 2;
-  width: max-content;
-  max-width: calc(100% - 2rem);
-  margin: 0;
-  translate: -50% 0;
-  font-size: clamp(1.1rem, 3.8vw, 1.35rem);
-  font-style: italic;
-  font-weight: 600;
-  color: var(--blanco);
-  text-shadow: 0 2px 0 var(--madera-oscura);
-  pointer-events: none;
-}
-
-.verso.nuevo {
-  animation: verso 0.25s ease-out;
-}
-
-@keyframes verso {
-  from { opacity: 0.2; translate: -50% 6px; }
-}
-
-.marcador,
-.bolsa {
-  margin: 1rem 0 0;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Cuando se rompe */
-
-.final {
-  position: absolute;
-  inset: 14% 1rem auto;
-  z-index: 4;
-  width: min(26rem, calc(100% - 2rem));
-  margin-inline: auto;
-  display: grid;
-  justify-items: center;
-  gap: 0.6rem;
-  padding: 1.25rem 1rem 1.5rem;
-  background: var(--blanco);
-  border: 3px solid var(--tinta);
-  border-radius: 20px;
-  box-shadow: 0 14px 30px rgb(43 29 20 / 0.15);
-  cursor: auto;
-  animation: aparecer 0.4s cubic-bezier(0.2, 1.4, 0.4, 1);
-}
-
-@keyframes aparecer {
-  from { opacity: 0; scale: 0.8; }
-}
-
-.mensaje {
-  margin: 0;
-  font-family: var(--fuente-rotulo);
-  font-size: clamp(1.75rem, 6vw, 2.75rem);
-  line-height: 1.1;
-  color: var(--color-1);
-  text-wrap: balance;
-}
-
-.resumen {
-  max-width: 30ch;
-  margin: 0;
-}
-
-.boton {
-  margin-top: 0.5rem;
-  padding: 0.85em 1.6em;
-  border: 0;
-  border-radius: 999px;
-  background: var(--color-1);
-  color: #FFFFFF;
-  font: 600 1.0625rem/1 var(--fuente);
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-
-.boton:hover {
-  transform: translateY(-1px);
-}
-
-.boton:active {
-  transform: translateY(1px);
-}
-
-.boton:focus-visible {
-  outline: 3px solid var(--tinta);
-  outline-offset: 4px;
-}
-
-.pie {
-  padding: 1.5rem 1rem;
-  text-align: center;
-  font-size: 0.875rem;
-  color: rgb(43 29 20 / 0.65);
-}
-
-/* Dulces, confeti y pedazos */
-
-.capa {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.capa > * {
-  position: absolute;
-  top: 0;
-  left: 0;
-  will-change: transform;
-}
-
-.dulce {
-  font-size: clamp(2rem, 7vw, 2.5rem);
-  line-height: 1;
-  cursor: pointer;
-  pointer-events: auto;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  filter: drop-shadow(0 3px 2px rgb(43 29 20 / 0.35));
-}
-
-.confeti {
-  width: 9px;
-  height: 13px;
-  border-radius: 2px;
-}
-
-.fragmento {
-  overflow: visible;
-}
-
-/* El palo con el que le pegas */
-
-.palo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 20;
-  width: 170px;
-  height: 14px;
-  border-radius: 7px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--mecate) 0 24px,
-    var(--color-1) 24px 34px,
-    var(--mecate) 34px 58px,
-    var(--color-3) 58px 68px
-  );
-  box-shadow: 0 3px 6px rgb(43 29 20 / 0.3);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.palo.izquierda {
-  --giro: 1;
-  translate: -100% -50%;
-  transform-origin: 0 50%;
-}
-
-.palo.derecha {
-  --giro: -1;
-  translate: 0 -50%;
-  transform-origin: 100% 50%;
+  right: -10px;
+  top: 50%;
+  width: 14px;
+  height: 22px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, var(--rosa), var(--amarillo));
+  clip-path: polygon(0 25%, 100% 0, 80% 50%, 100% 100%, 0 75%);
 }
 
 .palo.activo {
-  animation: batazo 0.3s ease-out;
+  opacity: 1;
 }
 
-@keyframes batazo {
-  0% { opacity: 1; transform: rotate(calc(var(--giro) * -55deg)); }
-  45% { opacity: 1; transform: rotate(calc(var(--giro) * 4deg)); }
-  100% { opacity: 0; transform: rotate(0deg); }
+.palo.pegando {
+  animation: palazo 0.22s ease-out;
 }
 
-/* ¡Pum! */
-
-.pum {
-  position: fixed;
-  z-index: 21;
-  margin: 0;
-  translate: -50% -140%;
-  font-family: var(--fuente-rotulo);
-  font-size: clamp(1.3rem, 4.5vw, 1.75rem);
-  color: var(--tinta);
-  text-shadow: 2px 0 0 var(--blanco), -2px 0 0 var(--blanco), 0 2px 0 var(--blanco), 0 -2px 0 var(--blanco),
-    2px 2px 0 var(--blanco), -2px -2px 0 var(--blanco), 2px -2px 0 var(--blanco), -2px 2px 0 var(--blanco);
-  white-space: nowrap;
-  pointer-events: none;
-  animation: pum 0.6s ease-out forwards;
+@keyframes palazo {
+  0% {
+    rotate: -28deg;
+  }
+  45% {
+    rotate: 26deg;
+  }
+  100% {
+    rotate: -28deg;
+  }
 }
 
-.pum.aire {
-  color: rgb(43 29 20 / 0.5);
-}
+@media (max-width: 520px) {
+  .patio {
+    height: 430px;
+  }
 
-@keyframes pum {
-  0% { opacity: 0; scale: 0.4; rotate: -10deg; }
-  20% { opacity: 1; scale: 1.15; rotate: -4deg; }
-  100% { opacity: 0; scale: 1; rotate: 0deg; translate: -50% -240%; }
-}
-
-.bolsa.lleno {
-  animation: lleno 0.3s ease-out;
-}
-
-@keyframes lleno {
-  50% { scale: 1.2; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .verso {
+    max-width: calc(100% - 135px);
+    padding: 6px 12px;
+    font-size: 0.82rem;
   }
 }
