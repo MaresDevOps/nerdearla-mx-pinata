@@ -1,16 +1,16 @@
 :root {
-  --rosa: #ff1e8a;
-  --amarillo: #ffd13b;
-  --azul: #2563eb;
-  --turquesa: #00d2b8;
-  --verde: #2ec46b;
-  --naranja: #ff7b29;
-  --morado-oscuro: #16112b;
-  --morado-medio: #271d4b;
-  --barro: #8f3a27;
-  --barro-oscuro: #5c2115;
-  --crema: #fff8eb;
-  --tinta: #140d1f;
+  --cobalto: #163a8c;
+  --cobalto-vivo: #2563eb;
+  --turquesa: #0891b2;
+  --cempasuchil: #f59e0b;
+  --amarillo-claro: #fde047;
+  --rosa: #e4007c;
+  --verde: #16a34a;
+  --porcelana: #fdfefd;
+  --marfil: #f3f7fc;
+  --cantera: #e2d4c3;
+  --cantera-sombra: #cbb69e;
+  --tinta: #102048;
 }
 
 *,
@@ -32,13 +32,10 @@ body {
 
 body {
   font-family: "Bricolage Grotesque", system-ui, -apple-system, sans-serif;
-  color: var(--crema);
-  background-color: var(--morado-oscuro);
-  background-image:
-    radial-gradient(circle at 50% 0%, rgba(255, 30, 138, 0.22), transparent 55%),
-    radial-gradient(circle at 15% 85%, rgba(0, 210, 184, 0.14), transparent 45%),
-    radial-gradient(rgba(255, 209, 59, 0.12) 1.5px, transparent 1.5px);
-  background-size: 100% 100%, 100% 100%, 34px 34px;
+  color: var(--tinta);
+  background-color: var(--marfil);
+  /* Mosaico sutil estilo azulejo de Talavera */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23163A8C' stroke-opacity='0.08' stroke-width='1.5'%3E%3Cpath d='M32 4 L60 32 L32 60 L4 32 Z'/%3E%3Ccircle cx='32' cy='32' r='10'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23F59E0B' fill-opacity='0.18' stroke='none'/%3E%3Cpath d='M0 0 L8 8 M64 0 L56 8 M0 64 L8 56 M64 64 L56 56'/%3E%3C/g%3E%3C/svg%3E");
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -60,53 +57,54 @@ body {
 
 .titulo {
   font-family: "Shrikhand", cursive;
-  font-size: clamp(1.85rem, 4.8vw, 2.9rem);
+  font-size: clamp(1.8rem, 4.6vw, 2.8rem);
   font-weight: 400;
-  line-height: 1.08;
+  line-height: 1.1;
   text-align: center;
-  color: var(--amarillo);
+  color: var(--cobalto);
   text-shadow:
-    0 3px 0 var(--rosa),
-    0 6px 0 var(--tinta),
-    0 0 24px rgba(255, 209, 59, 0.45);
+    2px 2px 0 var(--porcelana),
+    4px 4px 0 var(--cempasuchil),
+    6px 6px 0 rgba(16, 32, 72, 0.14);
   margin: 2px 0;
   letter-spacing: 0.015em;
 }
 
-/* Escenario: Patio de posada nocturna con cielo estrellado y piso de barro */
+/* Escenario: Patio colonial con muro encalado, cenefa de Talavera y piso de cantera */
 .patio {
   position: relative;
   width: 100%;
   height: clamp(440px, 64vh, 565px);
-  border: 4px solid var(--amarillo);
-  border-radius: 28px;
+  border: 5px solid var(--cobalto);
+  outline: 3px solid var(--cempasuchil);
+  border-radius: 26px;
   background:
-    /* Estrellas del cielo */
-    radial-gradient(circle at 14% 24%, #fff 1.5px, transparent 2px),
-    radial-gradient(circle at 28% 16%, rgba(255, 209, 59, 0.9) 2px, transparent 2.5px),
-    radial-gradient(circle at 74% 20%, #fff 1.5px, transparent 2px),
-    radial-gradient(circle at 86% 32%, rgba(255, 209, 59, 0.85) 1.8px, transparent 2.5px),
-    radial-gradient(circle at 62% 14%, #fff 1.2px, transparent 1.8px),
-    radial-gradient(circle at 38% 34%, #fff 1.2px, transparent 1.8px),
-    /* Cenefa divisoria y suelo de barro */
+    /* Textura de losetas en el piso */
+    repeating-linear-gradient(
+      90deg,
+      rgba(16, 32, 72, 0.05) 0 2px,
+      transparent 2px 68px
+    ),
+    /* Pared clara, cenefa azul/amarilla y suelo de cantera */
     linear-gradient(
       180deg,
-      #1b143b 0%,
-      #311e5c 44%,
-      #642958 67.5%,
-      var(--amarillo) 67.5%,
-      var(--rosa) 69%,
-      var(--barro) 69.5%,
-      var(--barro-oscuro) 100%
+      #dff0ff 0%,
+      #f6fbff 48%,
+      #ffffff 66%,
+      var(--cobalto) 66%,
+      var(--cobalto) 67.6%,
+      var(--cempasuchil) 67.6%,
+      var(--cempasuchil) 68.8%,
+      var(--cantera) 68.8%,
+      var(--cantera-sombra) 100%
     );
   box-shadow:
-    0 0 0 4px var(--tinta),
-    0 16px 36px rgba(0, 0, 0, 0.55),
-    inset 0 0 48px rgba(15, 10, 30, 0.55);
+    0 12px 0 var(--cobalto),
+    0 22px 34px rgba(16, 32, 72, 0.2);
   overflow: hidden;
 }
 
-/* Banderines de papel picado con brillo de feria */
+/* Banderines de papel picado en paleta Talavera */
 .techo {
   position: absolute;
   top: 0;
@@ -117,21 +115,20 @@ body {
   pointer-events: none;
   background-repeat: repeat-x;
   background-size: 250px 60px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 250 60'%3E%3Cpath d='M0 3 Q125 12 250 3' fill='none' stroke='%23FFD13B' stroke-width='2.5'/%3E%3Cg stroke='%23140D1F' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M4 5 H48 V43 L37 51 L26 43 L15 51 L4 43 Z' fill='%23FF1E8A'/%3E%3Cpath d='M54 6 H98 V45 L87 53 L76 45 L65 53 L54 45 Z' fill='%23FFD13B'/%3E%3Cpath d='M104 7 H148 V46 L137 54 L126 46 L115 54 L104 46 Z' fill='%2300D2B8'/%3E%3Cpath d='M154 6 H198 V45 L187 53 L176 45 L165 53 L154 45 Z' fill='%232EC46B'/%3E%3Cpath d='M204 5 H248 V43 L237 51 L226 43 L215 51 L204 43 Z' fill='%23FF7B29'/%3E%3C/g%3E%3Cg fill='%231B143B'%3E%3Ccircle cx='26' cy='24' r='5'/%3E%3Cpolygon points='76,17 82,24 76,31 70,24'/%3E%3Ccircle cx='126' cy='25' r='5'/%3E%3Cpolygon points='176,17 182,24 176,31 170,24'/%3E%3Ccircle cx='226' cy='24' r='5'/%3E%3C/g%3E%3C/svg%3E");
-  filter: drop-shadow(0 6px 10px rgba(255, 209, 59, 0.25));
-  animation: brisa 4s ease-in-out infinite alternate;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 250 60'%3E%3Cpath d='M0 3 Q125 12 250 3' fill='none' stroke='%23163A8C' stroke-width='2.5'/%3E%3Cg stroke='%23102048' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M4 5 H48 V43 L37 51 L26 43 L15 51 L4 43 Z' fill='%23163A8C'/%3E%3Cpath d='M54 6 H98 V45 L87 53 L76 45 L65 53 L54 45 Z' fill='%23F59E0B'/%3E%3Cpath d='M104 7 H148 V46 L137 54 L126 46 L115 54 L104 46 Z' fill='%230891B2'/%3E%3Cpath d='M154 6 H198 V45 L187 53 L176 45 L165 53 L154 45 Z' fill='%23E4007C'/%3E%3Cpath d='M204 5 H248 V43 L237 51 L226 43 L215 51 L204 43 Z' fill='%232563EB'/%3E%3C/g%3E%3Cg fill='%23FDFEFD'%3E%3Ccircle cx='26' cy='24' r='5'/%3E%3Cpolygon points='76,17 82,24 76,31 70,24'/%3E%3Ccircle cx='126' cy='25' r='5'/%3E%3Cpolygon points='176,17 182,24 176,31 170,24'/%3E%3Ccircle cx='226' cy='24' r='5'/%3E%3C/g%3E%3C/svg%3E");
+  animation: brisa 4.2s ease-in-out infinite alternate;
 }
 
 @keyframes brisa {
   0% {
-    transform: translateX(-5px) rotate(-0.35deg);
+    transform: translateX(-4px) rotate(-0.3deg);
   }
   100% {
-    transform: translateX(5px) rotate(0.35deg);
+    transform: translateX(4px) rotate(0.3deg);
   }
 }
 
-/* Macetas decorativas */
+/* Macetas decorativas (armonizan con la maceta de Talavera derecha) */
 .maceta {
   position: absolute;
   bottom: -2px;
@@ -139,7 +136,7 @@ body {
   height: auto;
   z-index: 4;
   pointer-events: none;
-  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 5px 4px rgba(16, 32, 72, 0.22));
 }
 
 .maceta-izquierda {
@@ -176,10 +173,10 @@ body {
   height: clamp(56px, 10vh, 88px);
   background: repeating-linear-gradient(
     -45deg,
-    #f3c677,
-    #f3c677 5px,
-    #b37432 5px,
-    #b37432 10px
+    #e0b47c,
+    #e0b47c 5px,
+    #9e6d3b 5px,
+    #9e6d3b 10px
   );
   border-left: 1.5px solid var(--tinta);
   border-right: 1.5px solid var(--tinta);
@@ -200,7 +197,7 @@ body {
 }
 
 .pinata:focus-visible {
-  filter: drop-shadow(0 0 0 4px var(--amarillo));
+  filter: drop-shadow(0 0 0 4px var(--cempasuchil));
 }
 
 .pinata.golpeada {
@@ -229,10 +226,10 @@ body {
   width: 100%;
   height: 100%;
   overflow: visible;
-  filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 14px 16px rgba(16, 32, 72, 0.25));
 }
 
-/* Verso tradicional inferior */
+/* Placa tipo azulejo para los versos */
 .verso {
   position: absolute;
   bottom: 14px;
@@ -241,18 +238,18 @@ body {
   margin: 0;
   padding: 9px 20px;
   max-width: calc(100% - 172px);
-  background: rgba(20, 13, 31, 0.9);
-  color: var(--crema);
-  border: 2.5px solid var(--amarillo);
-  border-radius: 999px;
-  box-shadow: 0 5px 0 var(--tinta), 0 8px 18px rgba(0, 0, 0, 0.4);
+  background: var(--porcelana);
+  color: var(--cobalto);
+  border: 3px solid var(--cobalto);
+  outline: 2px solid var(--cempasuchil);
+  border-radius: 16px;
+  box-shadow: 0 5px 0 var(--cobalto);
   font-weight: 800;
   font-size: clamp(0.85rem, 2.2vw, 1.04rem);
   text-align: center;
   line-height: 1.25;
   z-index: 6;
   pointer-events: none;
-  backdrop-filter: blur(6px);
   transition: transform 0.18s ease, border-color 0.18s ease;
 }
 
@@ -281,9 +278,9 @@ body {
 .chispa-texto {
   font-family: "Shrikhand", cursive;
   font-size: 1.45rem;
-  color: var(--amarillo);
-  -webkit-text-stroke: 1.5px var(--tinta);
-  text-shadow: 2px 2px 0 var(--rosa), 4px 4px 0 var(--tinta);
+  color: var(--cempasuchil);
+  -webkit-text-stroke: 1.5px var(--cobalto);
+  text-shadow: 2px 2px 0 var(--porcelana), 4px 4px 0 var(--cobalto);
   transform: translate(-50%, -50%);
   animation: flotar-golpe 0.65s ease-out forwards;
 }
@@ -307,20 +304,21 @@ body {
   position: absolute;
   pointer-events: auto;
   cursor: pointer;
-  border: none;
-  background: radial-gradient(circle, rgba(255, 209, 59, 0.28) 0%, transparent 70%);
+  border: 2px solid rgba(22, 58, 140, 0.25);
+  background: rgba(253, 254, 253, 0.85);
   border-radius: 50%;
   padding: 5px;
-  font-size: 1.95rem;
+  font-size: 1.85rem;
   line-height: 1;
-  filter: drop-shadow(0 5px 4px rgba(0, 0, 0, 0.45));
+  box-shadow: 0 4px 0 var(--cobalto);
   transition: transform 0.14s ease;
   z-index: 12;
   touch-action: manipulation;
 }
 
 .dulce:hover {
-  transform: scale(1.28) rotate(-8deg);
+  transform: scale(1.25) rotate(-8deg);
+  background: var(--amarillo-claro);
 }
 
 .dulce.recogido {
@@ -331,7 +329,7 @@ body {
 @keyframes recoger-dulce {
   0% {
     opacity: 1;
-    transform: scale(1.25);
+    transform: scale(1.2);
   }
   100% {
     opacity: 0;
@@ -339,7 +337,7 @@ body {
   }
 }
 
-/* Tarjeta final cuando se rompe la piñata */
+/* Tarjeta final estilo plato de Talavera */
 .final {
   position: absolute;
   top: 43%;
@@ -347,12 +345,12 @@ body {
   transform: translate(-50%, -50%);
   width: min(90%, 430px);
   padding: 24px 22px;
-  background: var(--crema);
+  background: var(--porcelana);
   color: var(--tinta);
-  border: 4px solid var(--rosa);
-  outline: 3px solid var(--amarillo);
+  border: 4px solid var(--cobalto);
+  outline: 3px solid var(--cempasuchil);
   border-radius: 24px;
-  box-shadow: 0 12px 0 var(--tinta), 0 22px 40px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 10px 0 var(--cobalto), 0 20px 32px rgba(16, 32, 72, 0.28);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -376,8 +374,8 @@ body {
 .mensaje {
   font-family: "Shrikhand", cursive;
   font-size: clamp(1.35rem, 3.6vw, 1.85rem);
-  color: var(--rosa);
-  text-shadow: 2px 2px 0 var(--amarillo);
+  color: var(--cobalto);
+  text-shadow: 2px 2px 0 var(--amarillo-claro);
   margin: 0;
   line-height: 1.15;
 }
@@ -396,55 +394,55 @@ body {
   font-family: inherit;
   font-size: 1rem;
   font-weight: 800;
-  color: #fff;
-  background: linear-gradient(135deg, var(--rosa), #c9126b);
+  color: var(--porcelana);
+  background: linear-gradient(135deg, var(--cobalto-vivo), var(--cobalto));
   border: 3px solid var(--tinta);
   border-radius: 999px;
-  box-shadow: 0 4px 0 var(--tinta);
+  box-shadow: 0 4px 0 var(--cempasuchil);
   cursor: pointer;
   transition: transform 0.1s ease, filter 0.15s ease;
 }
 
 .boton:hover {
-  filter: brightness(1.08);
+  filter: brightness(1.1);
   transform: translateY(-2px);
 }
 
 .boton:active {
   transform: translateY(2px);
-  box-shadow: 0 2px 0 var(--tinta);
+  box-shadow: 0 2px 0 var(--cempasuchil);
 }
 
-/* Marcador y bolsa tipo kermés */
+/* Marcador y bolsa inferiores */
 .marcador,
 .bolsa {
   margin: 0;
   padding: 9px 20px;
-  border-radius: 999px;
+  border-radius: 14px;
   font-weight: 800;
   font-size: 1rem;
-  letter-spacing: 0.01em;
 }
 
 .marcador {
-  background: var(--morado-medio);
-  color: var(--crema);
-  border: 2.5px solid var(--turquesa);
-  box-shadow: 0 4px 0 var(--tinta);
+  background: var(--porcelana);
+  color: var(--cobalto);
+  border: 3px solid var(--cobalto);
+  box-shadow: 0 4px 0 var(--cobalto);
 }
 
 .bolsa {
-  background: var(--amarillo);
+  background: var(--amarillo-claro);
   color: var(--tinta);
-  border: 2.5px solid var(--tinta);
-  box-shadow: 0 4px 0 var(--rosa);
+  border: 3px solid var(--cobalto);
+  box-shadow: 0 4px 0 var(--cempasuchil);
 }
 
 .pie {
   margin-top: 14px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: rgba(255, 248, 235, 0.72);
+  color: var(--cobalto);
+  opacity: 0.85;
   text-align: center;
 }
 
@@ -459,12 +457,12 @@ body {
   border-radius: 999px;
   background: repeating-linear-gradient(
     -60deg,
-    var(--rosa) 0 14px,
-    var(--amarillo) 14px 28px,
-    var(--turquesa) 28px 42px,
-    var(--naranja) 42px 56px
+    var(--cobalto) 0 14px,
+    var(--porcelana) 14px 28px,
+    var(--cempasuchil) 28px 42px,
+    var(--turquesa) 42px 56px
   );
-  box-shadow: 0 0 14px rgba(255, 209, 59, 0.45);
+  box-shadow: 0 4px 10px rgba(16, 32, 72, 0.28);
   transform-origin: 14px 50%;
   transform: translate(0, 0) rotate(-28deg);
   pointer-events: none;
@@ -481,7 +479,7 @@ body {
   width: 14px;
   height: 22px;
   transform: translateY(-50%);
-  background: linear-gradient(90deg, var(--rosa), var(--amarillo));
+  background: linear-gradient(90deg, var(--cobalto), var(--cempasuchil));
   clip-path: polygon(0 25%, 100% 0, 80% 50%, 100% 100%, 0 75%);
 }
 
