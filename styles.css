@@ -1,16 +1,15 @@
 :root {
-  --cobalto: #163a8c;
-  --cobalto-vivo: #2563eb;
-  --turquesa: #0891b2;
-  --cempasuchil: #f59e0b;
-  --amarillo-claro: #fde047;
-  --rosa: #e4007c;
-  --verde: #16a34a;
-  --porcelana: #fdfefd;
-  --marfil: #f3f7fc;
-  --cantera: #e2d4c3;
-  --cantera-sombra: #cbb69e;
-  --tinta: #102048;
+  --bugambilia: #d91e75;
+  --agave: #226652;
+  --agave-oscuro: #154436;
+  --sol: #ff9f1c;
+  --mango: #ffd166;
+  --turquesa: #1b9aaa;
+  --adobe: #b85d3b;
+  --adobe-oscuro: #6e311d;
+  --arena: #fbf0e4;
+  --crema: #fffaf3;
+  --tinta: #2c140e;
 }
 
 *,
@@ -33,9 +32,9 @@ body {
 body {
   font-family: "Bricolage Grotesque", system-ui, -apple-system, sans-serif;
   color: var(--tinta);
-  background-color: var(--marfil);
-  /* Mosaico sutil estilo azulejo de Talavera */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23163A8C' stroke-opacity='0.08' stroke-width='1.5'%3E%3Cpath d='M32 4 L60 32 L32 60 L4 32 Z'/%3E%3Ccircle cx='32' cy='32' r='10'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23F59E0B' fill-opacity='0.18' stroke='none'/%3E%3Cpath d='M0 0 L8 8 M64 0 L56 8 M0 64 L8 56 M64 64 L56 56'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: var(--arena);
+  /* Trama sutil de grecas geométricas */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23B85D3B' stroke-opacity='0.11' stroke-width='1.5'%3E%3Crect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/%3E%3Ccircle cx='28' cy='28' r='4'/%3E%3C/g%3E%3C/svg%3E");
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,54 +56,50 @@ body {
 
 .titulo {
   font-family: "Shrikhand", cursive;
-  font-size: clamp(1.8rem, 4.6vw, 2.8rem);
+  font-size: clamp(1.8rem, 4.6vw, 2.85rem);
   font-weight: 400;
   line-height: 1.1;
   text-align: center;
-  color: var(--cobalto);
+  color: var(--bugambilia);
   text-shadow:
-    2px 2px 0 var(--porcelana),
-    4px 4px 0 var(--cempasuchil),
-    6px 6px 0 rgba(16, 32, 72, 0.14);
+    2px 2px 0 var(--crema),
+    4px 4px 0 var(--sol),
+    6px 6px 0 rgba(44, 20, 14, 0.16);
   margin: 2px 0;
   letter-spacing: 0.015em;
 }
 
-/* Escenario: Patio colonial con muro encalado, cenefa de Talavera y piso de cantera */
+/* Escenario: Jardín al atardecer con sol poniente y suelo de tierra/adobe */
 .patio {
   position: relative;
   width: 100%;
   height: clamp(440px, 64vh, 565px);
-  border: 5px solid var(--cobalto);
-  outline: 3px solid var(--cempasuchil);
-  border-radius: 26px;
+  border: 5px solid var(--agave-oscuro);
+  outline: 3px solid var(--sol);
+  border-radius: 28px;
   background:
-    /* Textura de losetas en el piso */
-    repeating-linear-gradient(
-      90deg,
-      rgba(16, 32, 72, 0.05) 0 2px,
-      transparent 2px 68px
-    ),
-    /* Pared clara, cenefa azul/amarilla y suelo de cantera */
+    /* Disco del sol en el horizonte */
+    radial-gradient(circle at 50% 62%, rgba(255, 236, 179, 0.95) 0%, rgba(255, 209, 102, 0.55) 18%, transparent 42%),
+    /* Cielo de atardecer, cenefa de agave y suelo terracota */
     linear-gradient(
       180deg,
-      #dff0ff 0%,
-      #f6fbff 48%,
-      #ffffff 66%,
-      var(--cobalto) 66%,
-      var(--cobalto) 67.6%,
-      var(--cempasuchil) 67.6%,
-      var(--cempasuchil) 68.8%,
-      var(--cantera) 68.8%,
-      var(--cantera-sombra) 100%
+      #ff7b54 0%,
+      #ffa559 34%,
+      #ffd384 66.5%,
+      var(--agave) 66.5%,
+      var(--agave) 68.2%,
+      var(--bugambilia) 68.2%,
+      var(--bugambilia) 69.4%,
+      var(--adobe) 69.4%,
+      var(--adobe-oscuro) 100%
     );
   box-shadow:
-    0 12px 0 var(--cobalto),
-    0 22px 34px rgba(16, 32, 72, 0.2);
+    0 12px 0 var(--agave-oscuro),
+    0 22px 34px rgba(44, 20, 14, 0.25);
   overflow: hidden;
 }
 
-/* Banderines de papel picado en paleta Talavera */
+/* Banderines de papel picado en tonos cálidos y agave */
 .techo {
   position: absolute;
   top: 0;
@@ -115,7 +110,7 @@ body {
   pointer-events: none;
   background-repeat: repeat-x;
   background-size: 250px 60px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 250 60'%3E%3Cpath d='M0 3 Q125 12 250 3' fill='none' stroke='%23163A8C' stroke-width='2.5'/%3E%3Cg stroke='%23102048' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M4 5 H48 V43 L37 51 L26 43 L15 51 L4 43 Z' fill='%23163A8C'/%3E%3Cpath d='M54 6 H98 V45 L87 53 L76 45 L65 53 L54 45 Z' fill='%23F59E0B'/%3E%3Cpath d='M104 7 H148 V46 L137 54 L126 46 L115 54 L104 46 Z' fill='%230891B2'/%3E%3Cpath d='M154 6 H198 V45 L187 53 L176 45 L165 53 L154 45 Z' fill='%23E4007C'/%3E%3Cpath d='M204 5 H248 V43 L237 51 L226 43 L215 51 L204 43 Z' fill='%232563EB'/%3E%3C/g%3E%3Cg fill='%23FDFEFD'%3E%3Ccircle cx='26' cy='24' r='5'/%3E%3Cpolygon points='76,17 82,24 76,31 70,24'/%3E%3Ccircle cx='126' cy='25' r='5'/%3E%3Cpolygon points='176,17 182,24 176,31 170,24'/%3E%3Ccircle cx='226' cy='24' r='5'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 250 60'%3E%3Cpath d='M0 3 Q125 12 250 3' fill='none' stroke='%232C140E' stroke-width='2.5'/%3E%3Cg stroke='%232C140E' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M4 5 H48 V43 L37 51 L26 43 L15 51 L4 43 Z' fill='%23D91E75'/%3E%3Cpath d='M54 6 H98 V45 L87 53 L76 45 L65 53 L54 45 Z' fill='%23226652'/%3E%3Cpath d='M104 7 H148 V46 L137 54 L126 46 L115 54 L104 46 Z' fill='%23FFD166'/%3E%3Cpath d='M154 6 H198 V45 L187 53 L176 45 L165 53 L154 45 Z' fill='%231B9AAA'/%3E%3Cpath d='M204 5 H248 V43 L237 51 L226 43 L215 51 L204 43 Z' fill='%23FF9F1C'/%3E%3C/g%3E%3Cg fill='%23FFFAF3'%3E%3Ccircle cx='26' cy='24' r='5'/%3E%3Cpolygon points='76,17 82,24 76,31 70,24'/%3E%3Ccircle cx='126' cy='25' r='5'/%3E%3Cpolygon points='176,17 182,24 176,31 170,24'/%3E%3Ccircle cx='226' cy='24' r='5'/%3E%3C/g%3E%3C/svg%3E");
   animation: brisa 4.2s ease-in-out infinite alternate;
 }
 
@@ -128,7 +123,7 @@ body {
   }
 }
 
-/* Macetas decorativas (armonizan con la maceta de Talavera derecha) */
+/* Macetas decorativas */
 .maceta {
   position: absolute;
   bottom: -2px;
@@ -136,7 +131,7 @@ body {
   height: auto;
   z-index: 4;
   pointer-events: none;
-  filter: drop-shadow(0 5px 4px rgba(16, 32, 72, 0.22));
+  filter: drop-shadow(0 5px 5px rgba(44, 20, 14, 0.32));
 }
 
 .maceta-izquierda {
@@ -173,10 +168,10 @@ body {
   height: clamp(56px, 10vh, 88px);
   background: repeating-linear-gradient(
     -45deg,
-    #e0b47c,
-    #e0b47c 5px,
-    #9e6d3b 5px,
-    #9e6d3b 10px
+    #e5b880,
+    #e5b880 5px,
+    #8c5828 5px,
+    #8c5828 10px
   );
   border-left: 1.5px solid var(--tinta);
   border-right: 1.5px solid var(--tinta);
@@ -197,7 +192,7 @@ body {
 }
 
 .pinata:focus-visible {
-  filter: drop-shadow(0 0 0 4px var(--cempasuchil));
+  filter: drop-shadow(0 0 0 4px var(--mango));
 }
 
 .pinata.golpeada {
@@ -226,10 +221,10 @@ body {
   width: 100%;
   height: 100%;
   overflow: visible;
-  filter: drop-shadow(0 14px 16px rgba(16, 32, 72, 0.25));
+  filter: drop-shadow(0 14px 18px rgba(44, 20, 14, 0.3));
 }
 
-/* Placa tipo azulejo para los versos */
+/* Letrero de versos estilo madera tallada */
 .verso {
   position: absolute;
   bottom: 14px;
@@ -238,12 +233,11 @@ body {
   margin: 0;
   padding: 9px 20px;
   max-width: calc(100% - 172px);
-  background: var(--porcelana);
-  color: var(--cobalto);
-  border: 3px solid var(--cobalto);
-  outline: 2px solid var(--cempasuchil);
-  border-radius: 16px;
-  box-shadow: 0 5px 0 var(--cobalto);
+  background: var(--tinta);
+  color: var(--mango);
+  border: 2.5px solid var(--sol);
+  border-radius: 999px;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.35);
   font-weight: 800;
   font-size: clamp(0.85rem, 2.2vw, 1.04rem);
   text-align: center;
@@ -255,7 +249,7 @@ body {
 
 .verso.pulso {
   transform: translateX(-50%) scale(1.07);
-  border-color: var(--rosa);
+  border-color: var(--bugambilia);
 }
 
 /* Capa de confeti, pedazos y dulces */
@@ -278,9 +272,9 @@ body {
 .chispa-texto {
   font-family: "Shrikhand", cursive;
   font-size: 1.45rem;
-  color: var(--cempasuchil);
-  -webkit-text-stroke: 1.5px var(--cobalto);
-  text-shadow: 2px 2px 0 var(--porcelana), 4px 4px 0 var(--cobalto);
+  color: var(--mango);
+  -webkit-text-stroke: 1.5px var(--tinta);
+  text-shadow: 2px 2px 0 var(--bugambilia), 4px 4px 0 var(--tinta);
   transform: translate(-50%, -50%);
   animation: flotar-golpe 0.65s ease-out forwards;
 }
@@ -304,21 +298,21 @@ body {
   position: absolute;
   pointer-events: auto;
   cursor: pointer;
-  border: 2px solid rgba(22, 58, 140, 0.25);
-  background: rgba(253, 254, 253, 0.85);
+  border: 2px solid var(--bugambilia);
+  background: var(--crema);
   border-radius: 50%;
   padding: 5px;
   font-size: 1.85rem;
   line-height: 1;
-  box-shadow: 0 4px 0 var(--cobalto);
-  transition: transform 0.14s ease;
+  box-shadow: 0 4px 0 var(--tinta);
+  transition: transform 0.14s ease, background-color 0.14s ease;
   z-index: 12;
   touch-action: manipulation;
 }
 
 .dulce:hover {
   transform: scale(1.25) rotate(-8deg);
-  background: var(--amarillo-claro);
+  background: var(--mango);
 }
 
 .dulce.recogido {
@@ -337,7 +331,7 @@ body {
   }
 }
 
-/* Tarjeta final estilo plato de Talavera */
+/* Tarjeta final cuando se rompe la piñata */
 .final {
   position: absolute;
   top: 43%;
@@ -345,12 +339,12 @@ body {
   transform: translate(-50%, -50%);
   width: min(90%, 430px);
   padding: 24px 22px;
-  background: var(--porcelana);
+  background: var(--crema);
   color: var(--tinta);
-  border: 4px solid var(--cobalto);
-  outline: 3px solid var(--cempasuchil);
+  border: 4px solid var(--agave);
+  outline: 3px solid var(--bugambilia);
   border-radius: 24px;
-  box-shadow: 0 10px 0 var(--cobalto), 0 20px 32px rgba(16, 32, 72, 0.28);
+  box-shadow: 0 10px 0 var(--agave-oscuro), 0 22px 34px rgba(44, 20, 14, 0.35);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -374,8 +368,8 @@ body {
 .mensaje {
   font-family: "Shrikhand", cursive;
   font-size: clamp(1.35rem, 3.6vw, 1.85rem);
-  color: var(--cobalto);
-  text-shadow: 2px 2px 0 var(--amarillo-claro);
+  color: var(--bugambilia);
+  text-shadow: 2px 2px 0 var(--mango);
   margin: 0;
   line-height: 1.15;
 }
@@ -394,23 +388,23 @@ body {
   font-family: inherit;
   font-size: 1rem;
   font-weight: 800;
-  color: var(--porcelana);
-  background: linear-gradient(135deg, var(--cobalto-vivo), var(--cobalto));
+  color: var(--crema);
+  background: linear-gradient(135deg, var(--bugambilia), #b0135c);
   border: 3px solid var(--tinta);
   border-radius: 999px;
-  box-shadow: 0 4px 0 var(--cempasuchil);
+  box-shadow: 0 4px 0 var(--sol);
   cursor: pointer;
   transition: transform 0.1s ease, filter 0.15s ease;
 }
 
 .boton:hover {
-  filter: brightness(1.1);
+  filter: brightness(1.08);
   transform: translateY(-2px);
 }
 
 .boton:active {
   transform: translateY(2px);
-  box-shadow: 0 2px 0 var(--cempasuchil);
+  box-shadow: 0 2px 0 var(--sol);
 }
 
 /* Marcador y bolsa inferiores */
@@ -418,30 +412,30 @@ body {
 .bolsa {
   margin: 0;
   padding: 9px 20px;
-  border-radius: 14px;
+  border-radius: 999px;
   font-weight: 800;
   font-size: 1rem;
 }
 
 .marcador {
-  background: var(--porcelana);
-  color: var(--cobalto);
-  border: 3px solid var(--cobalto);
-  box-shadow: 0 4px 0 var(--cobalto);
+  background: var(--agave);
+  color: var(--crema);
+  border: 3px solid var(--tinta);
+  box-shadow: 0 4px 0 var(--agave-oscuro);
 }
 
 .bolsa {
-  background: var(--amarillo-claro);
+  background: var(--mango);
   color: var(--tinta);
-  border: 3px solid var(--cobalto);
-  box-shadow: 0 4px 0 var(--cempasuchil);
+  border: 3px solid var(--tinta);
+  box-shadow: 0 4px 0 var(--bugambilia);
 }
 
 .pie {
   margin-top: 14px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--cobalto);
+  color: var(--adobe-oscuro);
   opacity: 0.85;
   text-align: center;
 }
@@ -457,12 +451,12 @@ body {
   border-radius: 999px;
   background: repeating-linear-gradient(
     -60deg,
-    var(--cobalto) 0 14px,
-    var(--porcelana) 14px 28px,
-    var(--cempasuchil) 28px 42px,
+    var(--bugambilia) 0 14px,
+    var(--mango) 14px 28px,
+    var(--agave) 28px 42px,
     var(--turquesa) 42px 56px
   );
-  box-shadow: 0 4px 10px rgba(16, 32, 72, 0.28);
+  box-shadow: 0 4px 10px rgba(44, 20, 14, 0.3);
   transform-origin: 14px 50%;
   transform: translate(0, 0) rotate(-28deg);
   pointer-events: none;
@@ -479,7 +473,7 @@ body {
   width: 14px;
   height: 22px;
   transform: translateY(-50%);
-  background: linear-gradient(90deg, var(--cobalto), var(--cempasuchil));
+  background: linear-gradient(90deg, var(--bugambilia), var(--sol));
   clip-path: polygon(0 25%, 100% 0, 80% 50%, 100% 100%, 0 75%);
 }
 
