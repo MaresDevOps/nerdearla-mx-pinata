@@ -1,14 +1,16 @@
 :root {
-  --rosa: #e4007c;
-  --amarillo: #ffc21a;
-  --azul: #1f4aa8;
-  --verde: #3e9b4f;
-  --naranja: #ff7a1a;
-  --morado: #7b2cbf;
-  --crema: #fff6e5;
-  --papel: #fffdf9;
-  --tinta: #2b1d14;
-  --sombra: rgba(43, 29, 20, 0.16);
+  --rosa: #ff1e8a;
+  --amarillo: #ffd13b;
+  --azul: #2563eb;
+  --turquesa: #00d2b8;
+  --verde: #2ec46b;
+  --naranja: #ff7b29;
+  --morado-oscuro: #16112b;
+  --morado-medio: #271d4b;
+  --barro: #8f3a27;
+  --barro-oscuro: #5c2115;
+  --crema: #fff8eb;
+  --tinta: #140d1f;
 }
 
 *,
@@ -30,17 +32,18 @@ body {
 
 body {
   font-family: "Bricolage Grotesque", system-ui, -apple-system, sans-serif;
-  color: var(--tinta);
-  background-color: var(--crema);
+  color: var(--crema);
+  background-color: var(--morado-oscuro);
   background-image:
-    radial-gradient(circle at 20px 20px, rgba(228, 0, 124, 0.07) 2px, transparent 0),
-    radial-gradient(circle at 60px 60px, rgba(31, 74, 168, 0.07) 2px, transparent 0);
-  background-size: 80px 80px;
+    radial-gradient(circle at 50% 0%, rgba(255, 30, 138, 0.22), transparent 55%),
+    radial-gradient(circle at 15% 85%, rgba(0, 210, 184, 0.14), transparent 45%),
+    radial-gradient(rgba(255, 209, 59, 0.12) 1.5px, transparent 1.5px);
+  background-size: 100% 100%, 100% 100%, 34px 34px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 14px 20px;
+  padding: 18px 14px 22px;
   overflow-x: hidden;
   user-select: none;
   -webkit-user-select: none;
@@ -48,59 +51,83 @@ body {
 
 .fiesta {
   width: 100%;
-  max-width: 780px;
+  max-width: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .titulo {
   font-family: "Shrikhand", cursive;
-  font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+  font-size: clamp(1.85rem, 4.8vw, 2.9rem);
   font-weight: 400;
-  line-height: 1.1;
+  line-height: 1.08;
   text-align: center;
-  color: var(--rosa);
-  text-shadow: 3px 3px 0 var(--amarillo), 5px 5px 0 rgba(43, 29, 20, 0.12);
-  margin: 4px 0 2px;
-  letter-spacing: 0.01em;
+  color: var(--amarillo);
+  text-shadow:
+    0 3px 0 var(--rosa),
+    0 6px 0 var(--tinta),
+    0 0 24px rgba(255, 209, 59, 0.45);
+  margin: 2px 0;
+  letter-spacing: 0.015em;
 }
 
-/* Escenario principal */
+/* Escenario: Patio de posada nocturna con cielo estrellado y piso de barro */
 .patio {
   position: relative;
   width: 100%;
-  height: clamp(430px, 64vh, 560px);
-  border: 4px solid var(--tinta);
-  border-radius: 26px;
+  height: clamp(440px, 64vh, 565px);
+  border: 4px solid var(--amarillo);
+  border-radius: 28px;
   background:
-    linear-gradient(180deg, #ffe7ba 0%, #fff4dc 68%, #e9c99b 68.5%, #dfb782 100%);
-  box-shadow: 0 12px 0 var(--tinta), 0 20px 32px var(--sombra);
+    /* Estrellas del cielo */
+    radial-gradient(circle at 14% 24%, #fff 1.5px, transparent 2px),
+    radial-gradient(circle at 28% 16%, rgba(255, 209, 59, 0.9) 2px, transparent 2.5px),
+    radial-gradient(circle at 74% 20%, #fff 1.5px, transparent 2px),
+    radial-gradient(circle at 86% 32%, rgba(255, 209, 59, 0.85) 1.8px, transparent 2.5px),
+    radial-gradient(circle at 62% 14%, #fff 1.2px, transparent 1.8px),
+    radial-gradient(circle at 38% 34%, #fff 1.2px, transparent 1.8px),
+    /* Cenefa divisoria y suelo de barro */
+    linear-gradient(
+      180deg,
+      #1b143b 0%,
+      #311e5c 44%,
+      #642958 67.5%,
+      var(--amarillo) 67.5%,
+      var(--rosa) 69%,
+      var(--barro) 69.5%,
+      var(--barro-oscuro) 100%
+    );
+  box-shadow:
+    0 0 0 4px var(--tinta),
+    0 16px 36px rgba(0, 0, 0, 0.55),
+    inset 0 0 48px rgba(15, 10, 30, 0.55);
   overflow: hidden;
 }
 
-/* Banderines de papel picado */
+/* Banderines de papel picado con brillo de feria */
 .techo {
   position: absolute;
   top: 0;
-  left: -10px;
-  right: -10px;
-  height: 58px;
+  left: -12px;
+  right: -12px;
+  height: 60px;
   z-index: 3;
   pointer-events: none;
   background-repeat: repeat-x;
-  background-size: 250px 58px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 250 58'%3E%3Cpath d='M0 3 Q125 11 250 3' fill='none' stroke='%232B1D14' stroke-width='2.5'/%3E%3Cg stroke='%232B1D14' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M4 5 H48 V42 L37 50 L26 42 L15 50 L4 42 Z' fill='%23E4007C'/%3E%3Cpath d='M54 6 H98 V44 L87 52 L76 44 L65 52 L54 44 Z' fill='%23FFC21A'/%3E%3Cpath d='M104 7 H148 V45 L137 53 L126 45 L115 53 L104 45 Z' fill='%231F4AA8'/%3E%3Cpath d='M154 6 H198 V44 L187 52 L176 44 L165 52 L154 44 Z' fill='%233E9B4F'/%3E%3Cpath d='M204 5 H248 V42 L237 50 L226 42 L215 50 L204 42 Z' fill='%23FF7A1A'/%3E%3C/g%3E%3Cg fill='%23FFE7BA'%3E%3Ccircle cx='26' cy='23' r='5'/%3E%3Cpolygon points='76,17 82,24 76,31 70,24'/%3E%3Ccircle cx='126' cy='25' r='5'/%3E%3Cpolygon points='176,17 182,24 176,31 170,24'/%3E%3Ccircle cx='226' cy='23' r='5'/%3E%3C/g%3E%3C/svg%3E");
-  animation: brisa 4.2s ease-in-out infinite alternate;
+  background-size: 250px 60px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 250 60'%3E%3Cpath d='M0 3 Q125 12 250 3' fill='none' stroke='%23FFD13B' stroke-width='2.5'/%3E%3Cg stroke='%23140D1F' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M4 5 H48 V43 L37 51 L26 43 L15 51 L4 43 Z' fill='%23FF1E8A'/%3E%3Cpath d='M54 6 H98 V45 L87 53 L76 45 L65 53 L54 45 Z' fill='%23FFD13B'/%3E%3Cpath d='M104 7 H148 V46 L137 54 L126 46 L115 54 L104 46 Z' fill='%2300D2B8'/%3E%3Cpath d='M154 6 H198 V45 L187 53 L176 45 L165 53 L154 45 Z' fill='%232EC46B'/%3E%3Cpath d='M204 5 H248 V43 L237 51 L226 43 L215 51 L204 43 Z' fill='%23FF7B29'/%3E%3C/g%3E%3Cg fill='%231B143B'%3E%3Ccircle cx='26' cy='24' r='5'/%3E%3Cpolygon points='76,17 82,24 76,31 70,24'/%3E%3Ccircle cx='126' cy='25' r='5'/%3E%3Cpolygon points='176,17 182,24 176,31 170,24'/%3E%3Ccircle cx='226' cy='24' r='5'/%3E%3C/g%3E%3C/svg%3E");
+  filter: drop-shadow(0 6px 10px rgba(255, 209, 59, 0.25));
+  animation: brisa 4s ease-in-out infinite alternate;
 }
 
 @keyframes brisa {
   0% {
-    transform: translateX(-4px) rotate(-0.3deg);
+    transform: translateX(-5px) rotate(-0.35deg);
   }
   100% {
-    transform: translateX(4px) rotate(0.3deg);
+    transform: translateX(5px) rotate(0.35deg);
   }
 }
 
@@ -108,11 +135,11 @@ body {
 .maceta {
   position: absolute;
   bottom: -2px;
-  width: clamp(72px, 13vw, 108px);
+  width: clamp(74px, 13vw, 110px);
   height: auto;
   z-index: 4;
   pointer-events: none;
-  filter: drop-shadow(0 4px 0 rgba(43, 29, 20, 0.18));
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45));
 }
 
 .maceta-izquierda {
@@ -145,14 +172,14 @@ body {
 
 .cuerda {
   display: block;
-  width: 5px;
+  width: 6px;
   height: clamp(56px, 10vh, 88px);
   background: repeating-linear-gradient(
     -45deg,
-    #d4a36a,
-    #d4a36a 5px,
-    #9c6f3e 5px,
-    #9c6f3e 10px
+    #f3c677,
+    #f3c677 5px,
+    #b37432 5px,
+    #b37432 10px
   );
   border-left: 1.5px solid var(--tinta);
   border-right: 1.5px solid var(--tinta);
@@ -164,8 +191,8 @@ body {
   border: none;
   padding: 0;
   margin-top: -10px;
-  width: clamp(195px, 34vw, 265px);
-  height: clamp(195px, 34vw, 265px);
+  width: clamp(195px, 34vw, 268px);
+  height: clamp(195px, 34vw, 268px);
   cursor: pointer;
   touch-action: manipulation;
   outline: none;
@@ -202,7 +229,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: visible;
-  filter: drop-shadow(0 12px 14px rgba(43, 29, 20, 0.22));
+  filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.45));
 }
 
 /* Verso tradicional inferior */
@@ -212,23 +239,26 @@ body {
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
-  padding: 8px 18px;
-  max-width: calc(100% - 170px);
-  background: var(--papel);
-  border: 3px solid var(--tinta);
+  padding: 9px 20px;
+  max-width: calc(100% - 172px);
+  background: rgba(20, 13, 31, 0.9);
+  color: var(--crema);
+  border: 2.5px solid var(--amarillo);
   border-radius: 999px;
-  box-shadow: 0 4px 0 var(--tinta);
+  box-shadow: 0 5px 0 var(--tinta), 0 8px 18px rgba(0, 0, 0, 0.4);
   font-weight: 800;
-  font-size: clamp(0.85rem, 2.2vw, 1.05rem);
+  font-size: clamp(0.85rem, 2.2vw, 1.04rem);
   text-align: center;
   line-height: 1.25;
   z-index: 6;
   pointer-events: none;
-  transition: transform 0.18s ease;
+  backdrop-filter: blur(6px);
+  transition: transform 0.18s ease, border-color 0.18s ease;
 }
 
 .verso.pulso {
   transform: translateX(-50%) scale(1.07);
+  border-color: var(--rosa);
 }
 
 /* Capa de confeti, pedazos y dulces */
@@ -250,10 +280,10 @@ body {
 
 .chispa-texto {
   font-family: "Shrikhand", cursive;
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   color: var(--amarillo);
   -webkit-text-stroke: 1.5px var(--tinta);
-  text-shadow: 2px 2px 0 var(--tinta);
+  text-shadow: 2px 2px 0 var(--rosa), 4px 4px 0 var(--tinta);
   transform: translate(-50%, -50%);
   animation: flotar-golpe 0.65s ease-out forwards;
 }
@@ -265,7 +295,7 @@ body {
   }
   60% {
     opacity: 1;
-    transform: translate(-50%, -135%) scale(1.15) rotate(6deg);
+    transform: translate(-50%, -135%) scale(1.18) rotate(6deg);
   }
   100% {
     opacity: 0;
@@ -278,18 +308,19 @@ body {
   pointer-events: auto;
   cursor: pointer;
   border: none;
-  background: transparent;
-  padding: 4px;
-  font-size: 1.9rem;
+  background: radial-gradient(circle, rgba(255, 209, 59, 0.28) 0%, transparent 70%);
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 1.95rem;
   line-height: 1;
-  filter: drop-shadow(0 4px 0 rgba(43, 29, 20, 0.25));
+  filter: drop-shadow(0 5px 4px rgba(0, 0, 0, 0.45));
   transition: transform 0.14s ease;
   z-index: 12;
   touch-action: manipulation;
 }
 
 .dulce:hover {
-  transform: scale(1.25) rotate(-8deg);
+  transform: scale(1.28) rotate(-8deg);
 }
 
 .dulce.recogido {
@@ -300,7 +331,7 @@ body {
 @keyframes recoger-dulce {
   0% {
     opacity: 1;
-    transform: scale(1.2);
+    transform: scale(1.25);
   }
   100% {
     opacity: 0;
@@ -308,18 +339,20 @@ body {
   }
 }
 
-/* Pantalla final cuando se rompe la piñata */
+/* Tarjeta final cuando se rompe la piñata */
 .final {
   position: absolute;
-  top: 44%;
+  top: 43%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(90%, 420px);
-  padding: 22px 20px;
-  background: rgba(255, 253, 249, 0.96);
-  border: 4px solid var(--tinta);
-  border-radius: 22px;
-  box-shadow: 0 8px 0 var(--tinta), 0 18px 28px rgba(43, 29, 20, 0.25);
+  width: min(90%, 430px);
+  padding: 24px 22px;
+  background: var(--crema);
+  color: var(--tinta);
+  border: 4px solid var(--rosa);
+  outline: 3px solid var(--amarillo);
+  border-radius: 24px;
+  box-shadow: 0 12px 0 var(--tinta), 0 22px 40px rgba(0, 0, 0, 0.55);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -344,6 +377,7 @@ body {
   font-family: "Shrikhand", cursive;
   font-size: clamp(1.35rem, 3.6vw, 1.85rem);
   color: var(--rosa);
+  text-shadow: 2px 2px 0 var(--amarillo);
   margin: 0;
   line-height: 1.15;
 }
@@ -357,22 +391,22 @@ body {
 }
 
 .boton {
-  margin-top: 4px;
-  padding: 11px 22px;
+  margin-top: 6px;
+  padding: 12px 24px;
   font-family: inherit;
   font-size: 1rem;
   font-weight: 800;
   color: #fff;
-  background: var(--verde);
+  background: linear-gradient(135deg, var(--rosa), #c9126b);
   border: 3px solid var(--tinta);
   border-radius: 999px;
   box-shadow: 0 4px 0 var(--tinta);
   cursor: pointer;
-  transition: transform 0.1s ease, background-color 0.15s ease;
+  transition: transform 0.1s ease, filter 0.15s ease;
 }
 
 .boton:hover {
-  background: #338643;
+  filter: brightness(1.08);
   transform: translateY(-2px);
 }
 
@@ -381,28 +415,36 @@ body {
   box-shadow: 0 2px 0 var(--tinta);
 }
 
-/* Marcador y bolsa inferiores */
+/* Marcador y bolsa tipo kermés */
 .marcador,
 .bolsa {
   margin: 0;
-  padding: 8px 18px;
-  background: var(--papel);
-  border: 3px solid var(--tinta);
+  padding: 9px 20px;
   border-radius: 999px;
-  box-shadow: 0 4px 0 var(--tinta);
   font-weight: 800;
   font-size: 1rem;
+  letter-spacing: 0.01em;
+}
+
+.marcador {
+  background: var(--morado-medio);
+  color: var(--crema);
+  border: 2.5px solid var(--turquesa);
+  box-shadow: 0 4px 0 var(--tinta);
 }
 
 .bolsa {
   background: var(--amarillo);
+  color: var(--tinta);
+  border: 2.5px solid var(--tinta);
+  box-shadow: 0 4px 0 var(--rosa);
 }
 
 .pie {
   margin-top: 14px;
   font-size: 0.85rem;
   font-weight: 600;
-  opacity: 0.8;
+  color: rgba(255, 248, 235, 0.72);
   text-align: center;
 }
 
@@ -411,7 +453,7 @@ body {
   position: fixed;
   top: -100px;
   left: -100px;
-  width: 138px;
+  width: 142px;
   height: 16px;
   border: 2.5px solid var(--tinta);
   border-radius: 999px;
@@ -419,10 +461,10 @@ body {
     -60deg,
     var(--rosa) 0 14px,
     var(--amarillo) 14px 28px,
-    var(--azul) 28px 42px,
-    var(--verde) 42px 56px
+    var(--turquesa) 28px 42px,
+    var(--naranja) 42px 56px
   );
-  box-shadow: 0 4px 8px rgba(43, 29, 20, 0.25);
+  box-shadow: 0 0 14px rgba(255, 209, 59, 0.45);
   transform-origin: 14px 50%;
   transform: translate(0, 0) rotate(-28deg);
   pointer-events: none;
