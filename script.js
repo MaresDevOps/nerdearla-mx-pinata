@@ -1,448 +1,494 @@
-// ===== Arma tu piñata =====
+(() => {
+  const patio = document.getElementById("patio");
+  const colgante = document.getElementById("colgante");
+  const pinataBtn = document.getElementById("pinata");
+  const dibujo = document.getElementById("dibujo");
+  const versoEl = document.getElementById("verso");
+  const capa = document.getElementById("capa");
+  const finalEl = document.getElementById("final");
+  const resumenEl = document.getElementById("resumen");
+  const otraBtn = document.getElementById("otra");
+  const marcadorEl = document.getElementById("marcador");
+  const bolsaEl = document.getElementById("bolsa");
+  const contadorBolsaEl = document.getElementById("contador-bolsa");
+  const palo = document.getElementById("palo");
 
-// TODO 4: ¿Qué tiene tu piñata adentro?
-// Pon cada cosa entre comillas y sepáralas con comas. En el celular puedes usar el teclado de emojis.
-// Ejemplo: const dulces = ['🍬', '🍭', '🥜', '🍊', '🦖'];
-const dulces = ['🍬', '🍭', '🍫', '🥜', '🍊', '🍡'];
+  const PALETAS = [
+    ["#E4007C", "#FFC21A", "#1F4AA8", "#3E9B4F", "#FF7A1A"],
+    ["#7B2CBF", "#FF7A1A", "#FFC21A", "#E4007C", "#00A896"],
+    ["#1F4AA8", "#E4007C", "#3E9B4F", "#FFC21A", "#FF595E"],
+    ["#FF7A1A", "#3E9B4F", "#E4007C", "#1F4AA8", "#FFC21A"],
+  ];
 
-// TODO 5: ¿Cuántos picos tiene tu piñata?
-// La piñata tradicional tiene 7. Prueba con un número del 3 al 12.
-const picos = 7;
+  const VERSOS = [
+    "¡Dale, dale, dale, no pierdas el tino!",
+    "Porque si lo pierdes, pierdes el camino...",
+    "¡Ya le diste una, ya le diste dos!",
+    "¡Ya le diste tres y tu tiempo se acabó!",
+    "¡Échale más fuerte que ya va a tronar!",
+    "¡Ya casi se rompe, no dejes de pegar!",
+    "¡Un palazo más y caen los dulces!",
+  ];
 
-// TODO 6: ¿Cuántos golpes aguanta antes de romperse?
-const resistencia = 8;
+  const ONOMATOPEYAS = ["¡PUM!", "¡ZAS!", "¡CRAC!", "¡DALE!", "¡TOMA!"];
 
-// TODO 7: ¿Qué tan traviesa es la persona que jala la cuerda? Elige del 0 al 3.
-// 0 = no se mueve, 1 = se mece, 2 = la suben, la bajan y le dan jalones, 3 = no tiene piedad
-const travesura = 1;
+  const DULCES = ["🍬", "🍭", "🥜", "🍊", "🍫", "🧁", "🍪"];
 
+  let golpes = 0;
+  let golpesParaRomper = 9;
+  let dulcesJuntados = 0;
+  let rota = false;
+  let indicePaleta = 0;
 
-// ===== A partir de aquí no necesitas cambiar nada, pero puedes explorar =====
+  // Física de péndulo
+  let angulo = 0;
+  let velocidadAngular = 0;
 
-const letra = [
-  'Dale, dale, dale,',
-  'no pierdas el tino,',
-  'porque si lo pierdes,',
-  'pierdes el camino.',
-  'Ya le diste uno,',
-  'ya le diste dos,',
-  'ya le diste tres',
-  '¡y tu tiempo se acabó!',
-];
-const golpesFuertes = ['¡Pum!', '¡Paf!', '¡Zas!', '¡Toing!', '¡Cuas!'];
+  // Audio sintetizado con Web Audio API
+  let audioCtx = null;
 
-const niveles = [
-  { mecer: 0, subir: 0, rapidez: 1 },
-  { mecer: 16, subir: 30, rapidez: 1.2 },
-  { mecer: 26, subir: 80, rapidez: 1.5 },
-  { mecer: 36, subir: 140, rapidez: 2.1 },
-];
-
-const limitar = (n, min, max) => Math.min(max, Math.max(min, Math.round(Number(n) || 0)));
-const golpesNecesarios = limitar(resistencia, 1, 999);
-const numeroDePicos = limitar(picos, 3, 12);
-const sinMovimiento = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const movimiento = sinMovimiento ? niveles[0] : niveles[limitar(travesura, 0, 3)];
-const contenido = dulces.length > 0 ? dulces : ['🍬'];
-
-const patio = document.querySelector('#patio');
-const colgante = document.querySelector('#colgante');
-const cuerda = document.querySelector('#cuerda');
-const pinata = document.querySelector('#pinata');
-const dibujo = document.querySelector('#dibujo');
-const verso = document.querySelector('#verso');
-const marcador = document.querySelector('#marcador');
-const final = document.querySelector('#final');
-const resumen = document.querySelector('#resumen');
-const botonOtra = document.querySelector('#otra');
-const capa = document.querySelector('#capa');
-const palo = document.querySelector('#palo');
-const bolsa = document.querySelector('#bolsa');
-const contadorBolsa = document.querySelector('#contador-bolsa');
-
-document.title = document.querySelector('.titulo').textContent.trim();
-patio.style.setProperty('--subir', `${movimiento.subir}px`);
-
-let golpes = 0;
-let intentos = 0;
-let rota = false;
-let juntados = 0;
-let linea = 0;
-let conos = [];
-let grietas = [];
-let piezas = [];
-
-// ----- Dibujo de la piñata (SVG) -----
-
-const SVG = 'http://www.w3.org/2000/svg';
-const RADIO = 62; // centro de la piñata
-const LARGO = 112; // largo de cada pico
-
-const azar = (min, max) => min + Math.random() * (max - min);
-const polar = (r, a) => [r * Math.cos(a), r * Math.sin(a)];
-const entre = (p, q, f) => [p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f];
-const xy = (p) => `${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
-
-function crear(etiqueta, atributos, padre) {
-  const elemento = document.createElementNS(SVG, etiqueta);
-  for (const [nombre, valor] of Object.entries(atributos)) {
-    elemento.setAttribute(nombre, valor);
-  }
-  padre.append(elemento);
-  return elemento;
-}
-
-function dibujarPinata() {
-  dibujo.replaceChildren();
-  conos = [];
-
-  // Los picos se reparten alrededor del centro, dejando un hueco arriba para la cuerda
-  const paso = (2 * Math.PI) / numeroDePicos;
-  const mitad = Math.min(paso * 0.42, 0.55);
-
-  for (let i = 0; i < numeroDePicos; i++) {
-    const angulo = -Math.PI / 2 + paso / 2 + i * paso;
-    const base1 = polar(RADIO * 0.85, angulo - mitad);
-    const base2 = polar(RADIO * 0.85, angulo + mitad);
-    const punta = polar(RADIO + LARGO, angulo);
-    const color = (i % 3) + 1;
-    const franja = ((i + 1) % 3) + 1;
-
-    const grupo = crear('g', {}, dibujo);
-
-    // Borla de papel en la punta
-    for (let k = -2; k <= 2; k++) {
-      const fin = polar(RADIO + LARGO + 22, angulo + k * 0.06);
-      crear('path', { d: `M${xy(punta)} L${xy(fin)}`, class: `borla trazo-${((i + k + 3) % 3) + 1}` }, grupo);
+  function asegurarAudio() {
+    if (!audioCtx) {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (Ctx) audioCtx = new Ctx();
     }
-
-    crear('path', { d: `M${xy(base1)} L${xy(punta)} L${xy(base2)} Z`, class: `relleno-${color} contorno` }, grupo);
-
-    // Dos franjas en cada pico
-    for (const [desde, hasta] of [[0.3, 0.42], [0.6, 0.69]]) {
-      const puntos = [entre(base1, punta, desde), entre(base1, punta, hasta), entre(base2, punta, hasta), entre(base2, punta, desde)];
-      crear('path', { d: `M${puntos.map(xy).join(' L')} Z`, class: `relleno-${franja}` }, grupo);
-    }
-
-    conos.push({ grupo, angulo, centro: polar(RADIO + LARGO * 0.45, angulo) });
-  }
-
-  // Centro con papel de china
-  const cuerpo = crear('g', {}, dibujo);
-  crear('circle', { r: RADIO, class: 'relleno-cuerpo contorno' }, cuerpo);
-  [RADIO - 10, RADIO - 32].forEach((r, i) => {
-    crear('circle', { r, class: `fleco trazo-${(i % 3) + 1}` }, cuerpo);
-  });
-
-  // Grietas: aparecen poco a poco con cada golpe
-  const capaGrietas = crear('g', {}, dibujo);
-  grietas = [];
-  const total = 6;
-  for (let i = 0; i < total; i++) {
-    const angulo = (i / total) * 2 * Math.PI + azar(-0.3, 0.3);
-    let r = azar(4, 18);
-    let d = `M${xy(polar(r, angulo))}`;
-    while (r < RADIO + 45) {
-      r += azar(14, 24);
-      d += ` L${xy(polar(r, angulo + azar(-0.35, 0.35)))}`;
-    }
-    grietas.push(crear('path', { d, class: 'grieta' }, capaGrietas));
-  }
-  grietas.sort(() => Math.random() - 0.5);
-}
-
-// ----- Golpes -----
-
-function cantar() {
-  verso.textContent = letra[linea % letra.length];
-  linea++;
-  reiniciarAnimacion(verso, 'nuevo');
-}
-
-function reiniciarAnimacion(elemento, clase) {
-  elemento.classList.remove(clase);
-  void elemento.offsetWidth;
-  elemento.classList.add(clase);
-}
-
-function batear(x, y) {
-  const lado = x < innerWidth / 2 ? 'izquierda' : 'derecha';
-  palo.className = `palo ${lado}`;
-  palo.style.left = `${x}px`;
-  palo.style.top = `${y}px`;
-  reiniciarAnimacion(palo, 'activo');
-}
-
-function mostrarTexto(x, y, texto, clase = '') {
-  const pum = document.createElement('p');
-  pum.className = `pum ${clase}`;
-  pum.textContent = texto;
-  pum.style.left = `${x}px`;
-  pum.style.top = `${y}px`;
-  pum.addEventListener('animationend', () => pum.remove());
-  document.body.append(pum);
-}
-
-function pegar(x, y) {
-  if (rota) return;
-  golpes++;
-  intentos++;
-  cantar();
-  batear(x, y);
-  mostrarTexto(x, y, golpesFuertes[Math.floor(Math.random() * golpesFuertes.length)]);
-  reiniciarAnimacion(dibujo, 'golpe');
-
-  // Si le pegas del lado izquierdo, la piñata se va a la derecha (y al revés)
-  const caja = pinata.getBoundingClientRect();
-  const direccion = x < caja.left + caja.width / 2 ? -1 : 1;
-  pendulo.velocidad += direccion * azar(70, 120);
-
-  const visibles = Math.floor((golpes / golpesNecesarios) * (grietas.length + 1));
-  grietas.forEach((grieta, i) => grieta.classList.toggle('visible', i < visibles));
-  marcador.textContent = `Golpes: ${golpes}`;
-
-  if (golpes >= golpesNecesarios) romper();
-}
-
-function fallar(x, y) {
-  if (rota) return;
-  intentos++;
-  cantar();
-  batear(x, y);
-  mostrarTexto(x, y, '¡Aire!', 'aire');
-}
-
-// Con el dedo o el mouse: solo cuenta si tocas el dibujo
-pinata.addEventListener('pointerdown', (evento) => {
-  evento.stopPropagation();
-  pegar(evento.clientX, evento.clientY);
-});
-
-// Con el teclado (Enter o espacio)
-pinata.addEventListener('click', (evento) => {
-  if (evento.detail !== 0) return;
-  const caja = pinata.getBoundingClientRect();
-  pegar(caja.left + caja.width * azar(0.3, 0.7), caja.top + caja.height * 0.5);
-});
-
-patio.addEventListener('pointerdown', (evento) => {
-  if (evento.target.closest('.final')) return;
-  fallar(evento.clientX, evento.clientY);
-});
-
-// ----- ¡Se rompió! -----
-
-function agregarPieza(pieza) {
-  capa.append(pieza.el);
-  piezas.push({ giro: 0, vgiro: 0, gravedad: 1400, ...pieza });
-}
-
-function romper() {
-  rota = true;
-  // Las posiciones son relativas a la tarjeta, que es donde caen los dulces
-  const origen = capa.getBoundingClientRect();
-  const caja = dibujo.getBoundingClientRect();
-  const tam = dibujo.offsetWidth;
-  const centroX = caja.left + caja.width / 2 - origen.left;
-  const centroY = caja.top + caja.height / 2 - origen.top;
-  const escala = tam / 400;
-
-  if (!sinMovimiento) {
-    // Cada pico sale volando por su lado
-    for (const cono of conos) {
-      const svg = document.createElementNS(SVG, 'svg');
-      svg.setAttribute('viewBox', '-200 -200 400 400');
-      svg.setAttribute('class', 'fragmento');
-      svg.style.width = svg.style.height = `${tam}px`;
-      svg.style.transformOrigin = `${(cono.centro[0] + 200) * escala}px ${(cono.centro[1] + 200) * escala}px`;
-      svg.append(cono.grupo.cloneNode(true));
-      const fuerza = azar(220, 420);
-      agregarPieza({
-        el: svg,
-        tipo: 'fragmento',
-        x: centroX - tam / 2,
-        y: centroY - tam / 2,
-        vx: Math.cos(cono.angulo) * fuerza,
-        vy: Math.sin(cono.angulo) * fuerza - 250,
-        vgiro: azar(-300, 300),
-        vida: 1.6,
-      });
-    }
-
-    // Confeti de papel de china
-    for (let i = 0; i < 45; i++) {
-      const confeti = document.createElement('span');
-      confeti.className = 'confeti';
-      confeti.style.background = `var(${['--color-1', '--color-2', '--color-3', '--cuerpo'][i % 4]})`;
-      agregarPieza({
-        el: confeti,
-        tipo: 'confeti',
-        x: centroX + azar(-30, 30),
-        y: centroY + azar(-30, 30),
-        vx: azar(-380, 380),
-        vy: azar(-650, -150),
-        vgiro: azar(-720, 720),
-        gravedad: 700,
-        fase: azar(0, 6),
-        vida: azar(2.5, 4),
-      });
+    if (audioCtx && audioCtx.state === "suspended") {
+      audioCtx.resume();
     }
   }
 
-  // Los dulces caen al piso
-  for (let i = 0; i < 28; i++) {
-    const dulce = document.createElement('span');
-    dulce.className = 'dulce';
-    dulce.textContent = contenido[i % contenido.length];
-    const pieza = {
-      el: dulce,
-      tipo: 'dulce',
-      x: centroX + azar(-20, 20),
-      y: centroY + azar(-20, 20),
-      vx: azar(-280, 280),
-      vy: azar(-560, -120),
-      vgiro: azar(-400, 400),
-      suelo: capa.clientHeight - azar(18, 46),
-    };
-    dulce.addEventListener('pointerdown', () => juntar(pieza));
-    agregarPieza(pieza);
+  function sonarGolpe(intensidad = 1) {
+    asegurarAudio();
+    if (!audioCtx) return;
+
+    const ahora = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(160 + intensidad * 40, ahora);
+    osc.frequency.exponentialRampToValueAtTime(52, ahora + 0.14);
+
+    gain.gain.setValueAtTime(0.32, ahora);
+    gain.gain.exponentialRampToValueAtTime(0.001, ahora + 0.15);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(ahora);
+    osc.stop(ahora + 0.16);
   }
 
-  pinata.hidden = true;
-  marcador.hidden = true;
-  verso.textContent = '';
-  bolsa.hidden = false;
+  function sonarExplosion() {
+    asegurarAudio();
+    if (!audioCtx) return;
 
-  setTimeout(() => {
-    resumen.textContent = `Le pegaste ${golpes} ${golpes === 1 ? 'vez' : 'veces'} en ${intentos} ${intentos === 1 ? 'intento' : 'intentos'}. Toca los dulces para juntarlos.`;
-    final.hidden = false;
-    botonOtra.focus({ preventScroll: true });
-  }, 700);
-}
+    const ahora = audioCtx.currentTime;
+    const notas = [523.25, 659.25, 783.99, 1046.5];
 
-function juntar(pieza) {
-  if (pieza.juntado) return;
-  pieza.juntado = true;
-  const origen = capa.getBoundingClientRect();
-  const destino = bolsa.getBoundingClientRect();
-  const x = destino.left + destino.width / 2 - origen.left;
-  const y = destino.top + destino.height / 2 - origen.top;
-  pieza.el.style.transition = 'transform 0.45s cubic-bezier(0.5, -0.4, 0.7, 1), opacity 0.45s ease';
-  pieza.el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(0.4)`;
-  pieza.el.style.opacity = '0';
-  setTimeout(() => {
-    pieza.el.remove();
-    piezas = piezas.filter((otra) => otra !== pieza);
-    juntados++;
-    contadorBolsa.textContent = juntados;
-    reiniciarAnimacion(bolsa, 'lleno');
-  }, 450);
-}
+    notas.forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, ahora + i * 0.06);
 
-botonOtra.addEventListener('click', () => {
-  piezas.forEach((pieza) => pieza.el.remove());
-  piezas = [];
-  golpes = 0;
-  intentos = 0;
-  linea = 0;
-  rota = false;
-  pendulo.angulo = 0;
-  pendulo.velocidad = 0;
-  dibujarPinata();
-  pinata.hidden = false;
-  marcador.hidden = false;
-  marcador.textContent = 'Golpes: 0';
-  verso.textContent = 'Toca la piñata para pegarle';
-  final.hidden = true;
-  pinata.focus({ preventScroll: true });
-});
+      gain.gain.setValueAtTime(0.2, ahora + i * 0.06);
+      gain.gain.exponentialRampToValueAtTime(0.001, ahora + i * 0.06 + 0.35);
 
-// ----- Movimiento: la piñata se mece y la suben y bajan -----
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(ahora + i * 0.06);
+      osc.stop(ahora + i * 0.06 + 0.36);
+    });
+  }
 
-const pendulo = { angulo: 0, velocidad: 0 };
-let tiempo = 0;
-let anterior = performance.now();
-let largoCuerda = cuerda.offsetHeight;
-let jalon = 0;
-let siguienteJalon = azar(2, 4);
-addEventListener('resize', () => { largoCuerda = cuerda.offsetHeight; });
+  function sonarDulce() {
+    asegurarAudio();
+    if (!audioCtx) return;
 
-function moverPiezas(dt) {
-  for (const p of piezas) {
-    if (p.juntado || p.quieto) continue;
+    const ahora = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
 
-    p.vy += p.gravedad * dt;
-    if (p.tipo === 'confeti') {
-      p.vx *= 1 - 1.8 * dt;
-      p.vy = Math.min(p.vy, 130);
-      p.x += Math.sin(tiempo * 6 + p.fase) * 40 * dt;
-    }
-    p.x += p.vx * dt;
-    p.y += p.vy * dt;
-    p.giro += p.vgiro * dt;
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(660, ahora);
+    osc.frequency.setValueAtTime(990, ahora + 0.06);
 
-    if (p.tipo === 'dulce') {
-      if (p.y > p.suelo) {
-        p.y = p.suelo;
-        p.vy = Math.abs(p.vy) < 90 ? 0 : p.vy * -0.35;
-        p.vx *= 0.6;
-        p.vgiro *= 0.5;
-        if (p.vy === 0 && Math.abs(p.vx) < 2) p.quieto = true;
+    gain.gain.setValueAtTime(0.16, ahora);
+    gain.gain.exponentialRampToValueAtTime(0.001, ahora + 0.18);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(ahora);
+    osc.stop(ahora + 0.19);
+  }
+
+  // Dibuja la piñata de 7 picos en SVG
+  function renderizarPinata(paleta) {
+    const angulosPicos = [-90, -38.5, 13, 64.5, 115.5, 167, 218.5];
+    let picosSVG = "";
+
+    angulosPicos.forEach((deg, idx) => {
+      const c1 = paleta[idx % paleta.length];
+      const c2 = paleta[(idx + 1) % paleta.length];
+      const c3 = paleta[(idx + 2) % paleta.length];
+
+      picosSVG += `
+        <g transform="rotate(${deg})">
+          <!-- Flecos en la punta -->
+          <path d="M168 -10 L195 -18 L184 -4 L198 0 L184 4 L195 18 L168 10 Z"
+                fill="${c3}" stroke="#2B1D14" stroke-width="2.5" stroke-linejoin="round" />
+          <!-- Cono del pico -->
+          <polygon points="62,-32 174,0 62,32"
+                   fill="${c1}" stroke="#2B1D14" stroke-width="4" stroke-linejoin="round" />
+          <!-- Franjas decorativas -->
+          <polygon points="94,-23 122,-15 122,15 94,23" fill="${c2}" />
+          <polygon points="134,-11 154,-6 154,6 134,11" fill="#FFFDF9" />
+          <polygon points="62,-32 174,0 62,32"
+                   fill="none" stroke="#2B1D14" stroke-width="4" stroke-linejoin="round" />
+        </g>
+      `;
+    });
+
+    // Olas de papel crepé dentro de la esfera central
+    let olanesSVG = "";
+    for (let y = -76; y <= 76; y += 22) {
+      const color = paleta[Math.abs(y) % paleta.length];
+      let d = `M -95 ${y}`;
+      for (let x = -95; x <= 95; x += 20) {
+        d += ` Q ${x + 5} ${y + 10}, ${x + 10} ${y} T ${x + 20} ${y}`;
       }
-      const pared = capa.clientWidth - 20;
-      if (p.x < 20 || p.x > pared) {
-        p.x = Math.min(pared, Math.max(20, p.x));
-        p.vx *= -0.5;
-      }
-      p.el.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, -50%) rotate(${p.giro}deg)`;
+      d += ` L 95 100 L -95 100 Z`;
+      olanesSVG += `<path d="${d}" fill="${color}" stroke="#2B1D14" stroke-width="2.5" />`;
+    }
+
+    dibujo.innerHTML = `
+      <defs>
+        <clipPath id="clip-olla">
+          <circle cx="0" cy="0" r="78" />
+        </clipPath>
+      </defs>
+
+      <!-- 7 picos -->
+      ${picosSVG}
+
+      <!-- Olla central con papel crepé -->
+      <circle cx="0" cy="0" r="78" fill="${paleta[0]}" />
+      <g clip-path="url(#clip-olla)">
+        ${olanesSVG}
+      </g>
+      <circle cx="0" cy="0" r="78" fill="none" stroke="#2B1D14" stroke-width="4.5" />
+
+      <!-- Rosetón central -->
+      <circle cx="0" cy="0" r="28" fill="#FFFDF9" stroke="#2B1D14" stroke-width="3.5" />
+      <polygon points="0,-21 6,-7 21,-7 9,3 13,18 0,9 -13,18 -9,3 -21,-7 -6,-7"
+               fill="${paleta[1]}" stroke="#2B1D14" stroke-width="2.5" stroke-linejoin="round" />
+
+      <!-- Grietas que aparecen conforme recibe golpes -->
+      <g id="grietas" stroke="#2B1D14" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></g>
+    `;
+  }
+
+  function actualizarGrietas() {
+    const grietasEl = document.getElementById("grietas");
+    if (!grietasEl) return;
+
+    const progreso = golpes / golpesParaRomper;
+    let trazos = "";
+
+    if (progreso >= 0.25) {
+      trazos += `<path d="M -38 -42 L -22 -24 L -32 -12 L -16 4" />`;
+    }
+    if (progreso >= 0.5) {
+      trazos += `<path d="M 42 -30 L 24 -14 L 34 2 L 18 18" />`;
+      trazos += `<path d="M -12 34 L -4 48 L -16 62" />`;
+    }
+    if (progreso >= 0.75) {
+      trazos += `<path d="M -52 10 L -34 16 L -44 30 L -26 42" />`;
+      trazos += `<path d="M 10 -58 L 4 -40 L 18 -32" />`;
+    }
+
+    grietasEl.innerHTML = trazos;
+  }
+
+  function crearChispaTexto(x, y) {
+    const span = document.createElement("span");
+    span.className = "chispa-texto";
+    span.textContent =
+      ONOMATOPEYAS[Math.floor(Math.random() * ONOMATOPEYAS.length)];
+    span.style.left = `${x}px`;
+    span.style.top = `${y}px`;
+    capa.appendChild(span);
+    setTimeout(() => span.remove(), 700);
+  }
+
+  function lanzarConfetiYCarton(origenX, origenY) {
+    const paleta = PALETAS[indicePaleta];
+
+    // Confeti de colores
+    for (let i = 0; i < 42; i++) {
+      const pieza = document.createElement("div");
+      pieza.className = "confeti";
+      const ancho = 7 + Math.random() * 8;
+      const alto = 5 + Math.random() * 6;
+      pieza.style.width = `${ancho}px`;
+      pieza.style.height = `${alto}px`;
+      pieza.style.backgroundColor = paleta[i % paleta.length];
+      pieza.style.borderRadius = i % 3 === 0 ? "50%" : "2px";
+      pieza.style.left = `${origenX}px`;
+      pieza.style.top = `${origenY}px`;
+      capa.appendChild(pieza);
+
+      const vx = (Math.random() - 0.5) * 340;
+      const vy = -120 - Math.random() * 190;
+      const rotFinal = (Math.random() - 0.5) * 720;
+
+      pieza.animate(
+        [
+          { transform: "translate(0, 0) rotate(0deg)", opacity: 1 },
+          {
+            transform: `translate(${vx * 0.5}px, ${vy}px) rotate(${rotFinal * 0.5}deg)`,
+            opacity: 1,
+            offset: 0.35,
+          },
+          {
+            transform: `translate(${vx}px, ${patio.clientHeight - origenY + 30}px) rotate(${rotFinal}deg)`,
+            opacity: 0.85,
+          },
+        ],
+        {
+          duration: 1200 + Math.random() * 900,
+          easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          fill: "forwards",
+        }
+      ).onfinish = () => pieza.remove();
+    }
+
+    // Triángulos de cartón de la piñata
+    for (let i = 0; i < 10; i++) {
+      const pedazo = document.createElement("div");
+      pedazo.className = "pedazo";
+      pedazo.style.width = "22px";
+      pedazo.style.height = "22px";
+      pedazo.style.backgroundColor = paleta[i % paleta.length];
+      pedazo.style.border = "2px solid #2B1D14";
+      pedazo.style.clipPath = "polygon(50% 0%, 0% 100%, 100% 100%)";
+      pedazo.style.left = `${origenX}px`;
+      pedazo.style.top = `${origenY}px`;
+      capa.appendChild(pedazo);
+
+      const vx = (Math.random() - 0.5) * 300;
+      const vy = -90 - Math.random() * 140;
+
+      pedazo.animate(
+        [
+          { transform: "translate(0, 0) rotate(0deg)", opacity: 1 },
+          {
+            transform: `translate(${vx}px, ${patio.clientHeight - origenY + 40}px) rotate(${(Math.random() - 0.5) * 540}deg)`,
+            opacity: 0,
+          },
+        ],
+        {
+          duration: 950 + Math.random() * 450,
+          easing: "ease-in",
+          fill: "forwards",
+        }
+      ).onfinish = () => pedazo.remove();
+    }
+  }
+
+  function soltarDulces(origenX, origenY) {
+    const totalDulces = 14;
+    const pisoY = patio.clientHeight - 54;
+
+    for (let i = 0; i < totalDulces; i++) {
+      const dulceBtn = document.createElement("button");
+      dulceBtn.type = "button";
+      dulceBtn.className = "dulce";
+      dulceBtn.setAttribute("aria-label", "Recoger dulce");
+      dulceBtn.textContent = DULCES[i % DULCES.length];
+
+      const destinoX = Math.max(
+        78,
+        Math.min(
+          patio.clientWidth - 110,
+          origenX + (Math.random() - 0.5) * (patio.clientWidth * 0.68)
+        )
+      );
+      const destinoY = pisoY - Math.random() * 26;
+
+      dulceBtn.style.left = `${destinoX}px`;
+      dulceBtn.style.top = `${destinoY}px`;
+
+      const dxInicial = origenX - destinoX;
+      const dyInicial = origenY - destinoY;
+
+      dulceBtn.animate(
+        [
+          {
+            transform: `translate(${dxInicial}px, ${dyInicial}px) scale(0.4) rotate(0deg)`,
+          },
+          {
+            transform: `translate(${dxInicial * 0.45}px, ${dyInicial - 85}px) scale(1.1) rotate(180deg)`,
+            offset: 0.4,
+          },
+          {
+            transform: `translate(0px, -14px) scale(1) rotate(330deg)`,
+            offset: 0.82,
+          },
+          {
+            transform: `translate(0px, 0px) scale(1) rotate(360deg)`,
+          },
+        ],
+        {
+          duration: 650 + Math.random() * 300,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          fill: "forwards",
+        }
+      );
+
+      dulceBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (dulceBtn.classList.contains("recogido")) return;
+        dulceBtn.classList.add("recogido");
+        sonarDulce();
+
+        dulcesJuntados += 1;
+        bolsaEl.hidden = false;
+        contadorBolsaEl.textContent = String(dulcesJuntados);
+        actualizarResumen();
+
+        setTimeout(() => dulceBtn.remove(), 360);
+      });
+
+      capa.appendChild(dulceBtn);
+    }
+  }
+
+  function actualizarResumen() {
+    resumenEl.textContent = `La rompiste en ${golpes} ${
+      golpes === 1 ? "golpe" : "golpes"
+    } · Llevas ${dulcesJuntados} ${
+      dulcesJuntados === 1 ? "dulce" : "dulces"
+    } en tu bolsa (¡toca los dulces del suelo para juntarlos!).`;
+  }
+
+  function romperPinata(origenX, origenY) {
+    rota = true;
+    colgante.classList.add("rota");
+    versoEl.hidden = true;
+    sonarExplosion();
+
+    lanzarConfetiYCarton(origenX, origenY);
+    soltarDulces(origenX, origenY);
+
+    actualizarResumen();
+    setTimeout(() => {
+      if (rota) finalEl.hidden = false;
+    }, 550);
+  }
+
+  function pegarPinata(e) {
+    if (rota) return;
+
+    golpes += 1;
+    marcadorEl.textContent = `Golpes: ${golpes}`;
+
+    // Animación de impacto
+    pinataBtn.classList.remove("golpeada");
+    void pinataBtn.offsetWidth;
+    pinataBtn.classList.add("golpeada");
+
+    // Impulso al péndulo
+    const direccion = Math.random() < 0.5 ? -1 : 1;
+    velocidadAngular += direccion * (0.14 + Math.random() * 0.08);
+
+    // Coordenadas relativas al patio
+    const rectPatio = patio.getBoundingClientRect();
+    const rectPinata = pinataBtn.getBoundingClientRect();
+    const x =
+      e && typeof e.clientX === "number" && e.clientX > 0
+        ? e.clientX - rectPatio.left
+        : rectPinata.left - rectPatio.left + rectPinata.width / 2;
+    const y =
+      e && typeof e.clientY === "number" && e.clientY > 0
+        ? e.clientY - rectPatio.top
+        : rectPinata.top - rectPatio.top + rectPinata.height / 2;
+
+    crearChispaTexto(x, y);
+
+    // Actualizar verso
+    const indiceVerso = Math.min(golpes - 1, VERSOS.length - 1);
+    versoEl.textContent = VERSOS[indiceVerso];
+    versoEl.classList.remove("pulso");
+    void versoEl.offsetWidth;
+    versoEl.classList.add("pulso");
+
+    if (golpes >= golpesParaRomper) {
+      romperPinata(
+        rectPinata.left - rectPatio.left + rectPinata.width / 2,
+        rectPinata.top - rectPatio.top + rectPinata.height / 2
+      );
     } else {
-      p.vida -= dt;
-      p.el.style.opacity = Math.min(1, Math.max(0, p.vida));
-      const centrar = p.tipo === 'confeti' ? ' translate(-50%, -50%)' : '';
-      p.el.style.transform = `translate(${p.x}px, ${p.y}px)${centrar} rotate(${p.giro}deg)`;
+      sonarGolpe(golpes / golpesParaRomper);
+      actualizarGrietas();
     }
   }
 
-  piezas = piezas.filter((p) => {
-    if (p.vida !== undefined && p.vida <= 0) {
-      p.el.remove();
-      return false;
+  function colgarOtraPinata() {
+    golpes = 0;
+    golpesParaRomper = 8 + Math.floor(Math.random() * 5);
+    rota = false;
+    angulo = 0;
+    velocidadAngular = (Math.random() < 0.5 ? -1 : 1) * 0.06;
+
+    indicePaleta = (indicePaleta + 1) % PALETAS.length;
+    renderizarPinata(PALETAS[indicePaleta]);
+
+    // Limpiar confeti y dulces anteriores
+    capa.innerHTML = "";
+    finalEl.hidden = true;
+    versoEl.hidden = false;
+    versoEl.textContent = "Toca la piñata para pegarle";
+    marcadorEl.textContent = "Golpes: 0";
+    colgante.classList.remove("rota");
+  }
+
+  // Bucle de oscilación del péndulo
+  function animarPendulo() {
+    const gravedad = 0.012;
+    const amortiguacion = 0.965;
+
+    const aceleracion = -gravedad * Math.sin(angulo);
+    velocidadAngular += aceleracion;
+    velocidadAngular *= amortiguacion;
+    angulo += velocidadAngular;
+
+    colgante.style.transform = `translateX(-50%) rotate(${angulo}rad)`;
+    requestAnimationFrame(animarPendulo);
+  }
+
+  // Movimiento y golpe del palo
+  window.addEventListener("pointermove", (e) => {
+    if (e.pointerType === "mouse") {
+      palo.classList.add("activo");
+      palo.style.left = `${e.clientX - 10}px`;
+      palo.style.top = `${e.clientY - 8}px`;
     }
-    return true;
   });
-}
 
-function animar(ahora) {
-  const dt = Math.min(0.05, (ahora - anterior) / 1000);
-  anterior = ahora;
-  tiempo += dt * movimiento.rapidez;
+  window.addEventListener("pointerdown", (e) => {
+    palo.style.left = `${e.clientX - 10}px`;
+    palo.style.top = `${e.clientY - 8}px`;
+    palo.classList.add("activo");
+    palo.classList.remove("pegando");
+    void palo.offsetWidth;
+    palo.classList.add("pegando");
+  });
 
-  // Un péndulo con resorte: se mece solo y reacciona a cada golpe
-  // Dos vaivenes mezclados para que no sea fácil adivinar a dónde va
-  const objetivo = movimiento.mecer * (0.65 * Math.sin(tiempo * 1.3) + 0.35 * Math.sin(tiempo * 2.9 + 1));
-  pendulo.velocidad += (-(pendulo.angulo - objetivo) * 28 - pendulo.velocidad * 2.2) * dt;
-  pendulo.angulo += pendulo.velocidad * dt;
+  pinataBtn.addEventListener("click", pegarPinata);
+  otraBtn.addEventListener("click", colgarOtraPinata);
 
-  // De vez en cuando, quien jala la cuerda le da un jalón hacia arriba
-  if (movimiento.subir > 0) {
-    siguienteJalon -= dt;
-    if (siguienteJalon <= 0) {
-      jalon = 1;
-      siguienteJalon = azar(1.5, 4) / movimiento.rapidez;
-      pendulo.velocidad += azar(-3, 3) * movimiento.mecer;
-    }
-    jalon = Math.max(0, jalon - dt * 1.8);
-  }
-  const subida = 1 - Math.sin(jalon * Math.PI);
-  const bajada = movimiento.subir * ((1 - Math.cos(tiempo * 1.6)) / 2) * (0.6 + 0.4 * Math.sin(tiempo * 0.5)) * subida;
-
-  colgante.style.transform = `rotate(${pendulo.angulo}deg)`;
-  cuerda.style.transform = `scaleY(${(largoCuerda + bajada) / largoCuerda})`;
-  pinata.style.transform = `translateY(${bajada}px)`;
-
-  moverPiezas(dt);
-  requestAnimationFrame(animar);
-}
-
-dibujarPinata();
-requestAnimationFrame(animar);
+  // Inicialización
+  renderizarPinata(PALETAS[0]);
+  requestAnimationFrame(animarPendulo);
+})();
